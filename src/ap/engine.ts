@@ -1,6 +1,6 @@
 import { formatMoney, parseAmount, type Currency, type Money } from "./money";
-import { AGREEMENTS, INBOX, LATE_INVOICES, RULES, VENDORS } from "./seed";
-import type { Agreement, ApEvent, Check, Decision, InvoiceDraft, Outcome, Rules, Vendor } from "./types";
+import { isXmlDoc, type Agreement, type ApEvent, type Check, type Dataset, type Decision, type InboxDoc, type InvoiceDraft, type Outcome, type Quote, type Rules, type RulesInput, type Vendor } from "./types";
+import { xmlDocToDraft } from "./xml";
 
 const MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 export const monthName = (p: string) => MONTHS[Number(p.slice(5, 7)) - 1] ?? p;
@@ -9,6 +9,11 @@ const prevMonth = (p: string) => {
   return m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, "0")}`;
 };
 const covers = (ag: Agreement, period: string) => ag.effectiveFrom <= period && (!ag.effectiveTo || period <= ag.effectiveTo);
+
+/** Every quote must appear verbatim in the document text. Returns the quotes that do not. */
+export function verifyQuotes(text: string, quotes: Quote[]): Quote[] {
+  return quotes.filter((q) => !q.text || !text.includes(q.text));
+}
 
 export function contentHash(inv: InvoiceDraft): string {
   const s = [inv.id, inv.vendorRef, inv.invoiceNumber, inv.amountText, inv.period, inv.bankLast4, inv.text].join("|");
@@ -70,7 +75,7 @@ export function evaluate({ invoice: inv, rules, vendors, agreements, month }: Ev
   const mes = monthName(inv.period);
 
   // evidence
-  const missingQuote = inv.quotes.find((q) => !inv.text.includes(q.text));
+  const missingQuote = verifyQuotes(inv.text, inv.quotes)[0];
   const needsBank = vendor?.kind !== "software" && (vendor !== null || inv.bankLast4 === null) && !(vendor === null && inv.bankLast4);
   const missingBank = needsBank && !inv.bankLast4;
   checks.push({
@@ -156,21 +161,62 @@ export type InvoiceView = {
 };
 
 export type ApState = {
+  dataset: Dataset;
   rules: Rules;
+  rulesHistory: Rules[];
   vendors: Vendor[];
   agreements: Agreement[];
   invoices: InvoiceView[];
   reservations: Reservation[];
   decisions: Decision[];
+  reviewedIds: Set<string>;
 };
 
-export function buildState(events: ApEvent[] = []): ApState {
-  const rules = RULES;
-  const vendors = VENDORS;
-  const agreements: Agreement[] = AGREEMENTS.map((a) => ({ ...a, amount: { ...a.amount } }));
+/** Turns a document as it arrived into a draft: XML via the parser, everything else as read. */
+export function toDraft(doc: InboxDoc, vendors: Vendor[]): InvoiceDraft {
+  return isXmlDoc(doc) ? xmlDocToDraft(doc, vendors) : doc;
+}
+
+/** Uploaded drafts may name a vendor instead of its id. */
+function resolveVendor(d: InvoiceDraft, vendors: Vendor[]): InvoiceDraft {
+  if (vendors.some((v) => v.id === d.vendorRef)) return d;
+  const n = (x: string) => x.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  const v = vendors.find((x) => n(x.name) === n(d.vendorName) || n(x.name) === n(d.vendorRef));
+  return v ? { ...d, vendorRef: v.id, vendorName: v.name } : d;
+}
+
+function isDraft(x: unknown): x is InvoiceDraft {
+  const d = x as InvoiceDraft;
+  return !!d && typeof d === "object" && typeof d.id === "string" && typeof d.text === "string" && typeof d.amountText === "string"
+    && typeof d.period === "string" && Array.isArray(d.quotes) && typeof d.vendorName === "string";
+}
+
+function sanitizeRules(input: unknown, prev: Rules, version: string): Rules | null {
+  const r = input as RulesInput;
+  if (!r || typeof r !== "object") return null;
+  const ints = (o: Record<string, unknown>, base: Record<string, number>) => {
+    const out: Record<string, number> = { ...base };
+    for (const k of Object.keys(base)) { const v = o?.[k]; if (typeof v === "number" && Number.isSafeInteger(v) && v >= 0) out[k] = v; }
+    return out;
+  };
+  return {
+    version,
+    autoLimit: ints(r.autoLimit as never, prev.autoLimit) as Rules["autoLimit"],
+    budget: ints(r.budget as never, prev.budget) as Rules["budget"],
+    tolerancePct: ints(r.tolerancePct as never, prev.tolerancePct) as Rules["tolerancePct"],
+  };
+}
+
+export function buildState(dataset: Dataset, events: ApEvent[] = []): ApState {
+  let rules: Rules = { ...dataset.rules };
+  const rulesHistory: Rules[] = [rules];
+  const vendors = dataset.vendors;
+  const agreements: Agreement[] = dataset.agreements.map((a) => ({ ...a, amount: { ...a.amount } }));
   const month: MonthState = { processed: [], reservations: [] };
   const decisions: Decision[] = [];
   const views = new Map<string, InvoiceView>();
+  const reviewedIds = new Set<string>();
+  const docs = new Map<string, InboxDoc>([...dataset.inbox, ...dataset.late, ...dataset.holdout].map((d) => [d.id, d]));
   let seq = 0;
 
   const record = (inv: InvoiceDraft, ev: Evaluation, at: string, by: Decision["by"], note: string | null): Decision => {
@@ -195,37 +241,60 @@ export function buildState(events: ApEvent[] = []): ApState {
     for (const u of used) { const ag = agreements.find((a) => a.id === u.id); if (ag) ag.status = "USED"; }
   };
 
-  const process = (inv: InvoiceDraft) => {
-    if (views.has(inv.id)) return;
+  const process = (inv: InvoiceDraft, at: string) => {
+    if (views.has(inv.id)) return; // procesar dos veces no duplica
     const ev = evaluate({ invoice: inv, rules, vendors, agreements, month });
     month.processed.push(inv);
-    record(inv, ev, inv.receivedAt, "bullao", null);
+    record(inv, ev, at, "bullao", null);
     if (ev.outcome === "READY") reserve(inv, ev);
   };
 
-  INBOX.forEach(process);
+  const reevaluatePending = (filter: (v: InvoiceView) => boolean, at: string, note: string) => {
+    const list = [...views.values()].filter((v) => v.current.outcome !== "READY" && v.current.by === "bullao" && filter(v))
+      .sort((x, y) => (x.invoice.receivedAt < y.invoice.receivedAt ? -1 : 1));
+    for (const v of list) {
+      const ev = evaluate({ invoice: v.invoice, rules, vendors, agreements, month });
+      if (ev.outcome === v.current.outcome && JSON.stringify(ev.checks) === JSON.stringify(v.current.checks)) continue;
+      record(v.invoice, ev, at, "bullao", note);
+      if (ev.outcome === "READY") reserve(v.invoice, ev);
+    }
+  };
 
-  const sorted = [...events].sort((x, y) => (x.created_at < y.created_at ? -1 : 1));
+  const sorted = [...events].sort((x, y) => (x.created_at < y.created_at ? -1 : x.created_at > y.created_at ? 1 : 0));
   for (const e of sorted) {
     const actor = e.actor ?? "Operador";
-    if (e.kind === "receive_invoice") {
-      const inv = LATE_INVOICES[String(e.payload["invoiceId"])];
-      if (inv) process({ ...inv, receivedAt: e.created_at });
+    const p = e.payload ?? {};
+    if (e.kind === "review_invoice" || e.kind === "receive_invoice") {
+      let draft: InvoiceDraft | null = null;
+      try {
+        const id = p["invoiceId"] ?? p["docId"];
+        if (typeof id === "string" && docs.has(id)) {
+          draft = toDraft(docs.get(id)!, vendors);
+          if (e.kind === "receive_invoice") draft = { ...draft, receivedAt: e.created_at };
+        } else if (isDraft(p["draft"])) {
+          draft = resolveVendor({ ...(p["draft"] as InvoiceDraft), receivedAt: e.created_at }, vendors);
+        }
+      } catch { draft = null; }
+      if (draft) { reviewedIds.add(draft.id); process(draft, e.created_at); }
+    } else if (e.kind === "update_rules") {
+      const next = sanitizeRules(p["rules"], rules, `reglas-v${rulesHistory.length + 1}`);
+      if (!next) continue;
+      rules = next; rulesHistory.push(next);
+      reevaluatePending(() => true, e.created_at, `Revisada de nuevo con ${next.version}.`);
     } else if (e.kind === "hold_invoice") {
-      const v = views.get(String(e.payload["invoiceId"]));
+      const v = views.get(String(p["invoiceId"]));
       if (v) v.held = true;
     } else if (e.kind === "approve_invoice") {
-      const v = views.get(String(e.payload["invoiceId"]));
+      const v = views.get(String(p["invoiceId"]));
       if (!v || v.current.outcome !== "REVIEW") continue;
-      if (e.payload["contentHash"] !== contentHash(v.invoice)) continue; // la cuenta cambió: la autorización no sirve
-      // Reevalúa con el estado actual antes de apartar.
+      if (p["contentHash"] !== contentHash(v.invoice)) continue; // la cuenta cambió: la autorización no sirve
       const ev = evaluate({ invoice: v.invoice, rules, vendors, agreements, month });
       if (ev.outcome === "BLOCKED") {
         record(v.invoice, ev, e.created_at, "persona", `${actor} dio el visto bueno, pero al revisar de nuevo ya no se puede aprobar.`);
         continue;
       }
       let note = `${actor} dio el visto bueno solo para esta cuenta.`;
-      if (ev.overBy && v.invoice.vendorRef) {
+      if (ev.overBy) {
         const one: Agreement = {
           id: `ot-${v.invoice.id}`, vendorId: v.invoice.vendorRef, service: ev.agreed.base?.service ?? v.invoice.concept,
           kind: "ONE_TIME", amount: ev.overBy, effectiveFrom: v.invoice.period, effectiveTo: v.invoice.period,
@@ -241,7 +310,7 @@ export function buildState(events: ApEvent[] = []): ApState {
       record(v.invoice, approved, e.created_at, "persona", note);
       reserve(v.invoice, approved);
     } else if (e.kind === "approve_agreement") {
-      const ag = agreements.find((a) => a.id === String(e.payload["agreementId"]));
+      const ag = agreements.find((a) => a.id === String(p["agreementId"]));
       if (!ag || ag.status !== "PROPOSED") continue;
       ag.status = "APPROVED"; ag.approvedBy = actor; ag.approvedAt = e.created_at;
       if (ag.kind === "MODIFICATION") {
@@ -251,25 +320,39 @@ export function buildState(events: ApEvent[] = []): ApState {
           }
         }
       }
-      // Cuentas pendientes de ese proveedor se vuelven a revisar; las decisiones pasadas no cambian.
-      for (const v of views.values()) {
-        if (v.invoice.vendorRef !== ag.vendorId || v.current.outcome !== "REVIEW") continue;
-        const ev = evaluate({ invoice: v.invoice, rules, vendors, agreements, month });
-        if (ev.outcome === v.current.outcome && JSON.stringify(ev.checks) === JSON.stringify(v.current.checks)) continue;
-        record(v.invoice, ev, e.created_at, "bullao", "Revisada de nuevo porque cambió lo acordado.");
-        if (ev.outcome === "READY") reserve(v.invoice, ev);
-      }
+      reevaluatePending((v) => v.invoice.vendorRef === ag.vendorId, e.created_at, "Revisada de nuevo porque cambió lo acordado.");
     }
   }
 
   const invoices = [...views.values()].sort((x, y) => (x.invoice.receivedAt < y.invoice.receivedAt ? -1 : 1));
-  return { rules, vendors, agreements, invoices, reservations: month.reservations, decisions };
+  return { dataset, rules, rulesHistory, vendors, agreements, invoices, reservations: month.reservations, decisions, reviewedIds };
 }
 
 /** Evalúa un borrador propuesto por un agente sin guardar nada. */
 export function previewDraft(state: ApState, draft: InvoiceDraft): Evaluation {
-  return evaluate({ invoice: draft, rules: state.rules, vendors: state.vendors, agreements: state.agreements,
+  return evaluate({ invoice: resolveVendor(draft, state.vendors), rules: state.rules, vendors: state.vendors, agreements: state.agreements,
     month: { processed: state.invoices.map((v) => v.invoice), reservations: state.reservations } });
+}
+
+export type RulesChange = { invoiceId: string; vendor: string; before: Outcome; after: Outcome };
+
+/** Qué cuentas cambiarían con estas reglas. No guarda nada. */
+export function previewRules(dataset: Dataset, events: ApEvent[], rules: RulesInput): RulesChange[] {
+  const before = buildState(dataset, events);
+  const last = events.reduce((m, e) => (e.created_at > m ? e.created_at : m), "1970-01-01T00:00:00Z");
+  const at = new Date(new Date(last).getTime() + 1).toISOString();
+  const after = buildState(dataset, [...events, { id: "preview", kind: "update_rules", payload: { rules }, actor: null, created_at: at }]);
+  return after.invoices.flatMap((v) => {
+    const b = before.invoices.find((x) => x.invoice.id === v.invoice.id);
+    return b && b.current.outcome !== v.current.outcome ? [{ invoiceId: v.invoice.id, vendor: v.invoice.vendorName, before: b.current.outcome, after: v.current.outcome }] : [];
+  });
+}
+
+/** Review events for the whole inbox, in arrival order (used by the demo and tests). */
+export function inboxReviewEvents(dataset: Dataset, startIso = "2026-10-10T00:00:00.000Z"): ApEvent[] {
+  const t0 = new Date(startIso).getTime();
+  return [...dataset.inbox].sort((a, b) => (a.receivedAt < b.receivedAt ? -1 : 1))
+    .map((d, i) => ({ id: `r-${d.id}`, kind: "review_invoice" as const, payload: { docId: d.id }, actor: "Bullao", created_at: new Date(t0 + i).toISOString() }));
 }
 
 export const OUTCOME_LABEL: Record<Outcome, string> = {

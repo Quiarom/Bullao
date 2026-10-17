@@ -1,0 +1,134 @@
+[
+  {
+    "id": "hold-22",
+    "vendorRef": "ana",
+    "vendorName": "Ana Ríos",
+    "invoiceNumber": "AR-041",
+    "businessId": null,
+    "amountText": "USD 1,200.00",
+    "currencyHint": null,
+    "period": "2026-10",
+    "concept": "Desarrollo frontend octubre",
+    "bankLast4": "4821",
+    "channel": "correo",
+    "receivedAt": "2026-10-05T09:00:00Z",
+    "text": "┌─ FACTURA SIMPLIFICADA ─────────────\n│ Ref: AR-041\n│ Emite: Ana Ríos\n│ Detalle: Desarrollo frontend octubre\n│ Importe total: USD 1,200.00\n│ Abonar a: ****4821\n└────────────────────────────────────\n\nDOCUMENTO FICTICIO · 30X HACKATHON",
+    "quotes": [
+      {
+        "field": "monto",
+        "text": "USD 1,200.00"
+      },
+      {
+        "field": "número",
+        "text": "AR-041"
+      },
+      {
+        "field": "cuenta bancaria",
+        "text": "****4821"
+      },
+      {
+        "field": "concepto",
+        "text": "Desarrollo frontend octubre"
+      }
+    ],
+    "method": "fixture"
+  },
+  {
+    "id": "hold-23",
+    "vendorRef": "nimbus",
+    "vendorName": "Nimbus Analytics",
+    "invoiceNumber": "NB-6012",
+    "businessId": null,
+    "amountText": "USD 330.00",
+    "currencyHint": null,
+    "period": "2026-11",
+    "concept": "Plan pro noviembre",
+    "bankLast4": null,
+    "channel": "correo",
+    "receivedAt": "2026-10-05T10:00:00Z",
+    "text": "┌─ FACTURA SIMPLIFICADA ─────────────\n│ Ref: NB-6012\n│ Emite: Nimbus Analytics\n│ Detalle: Plan pro noviembre\n│ Importe total: USD 330.00\n└────────────────────────────────────\n\nDOCUMENTO FICTICIO · 30X HACKATHON",
+    "quotes": [
+      {
+        "field": "monto",
+        "text": "USD 330.00"
+      },
+      {
+        "field": "número",
+        "text": "NB-6012"
+      },
+      {
+        "field": "concepto",
+        "text": "Plan pro noviembre"
+      }
+    ],
+    "method": "fixture"
+  },
+  {
+    "id": "hold-24",
+    "vendorRef": "valentina",
+    "vendorName": "Valentina Ruiz",
+    "invoiceNumber": "VR-2026-10B",
+    "businessId": null,
+    "amountText": "$1.200.000",
+    "currencyHint": "COP",
+    "period": "2026-10",
+    "concept": "Copywriting adicional",
+    "bankLast4": "4402",
+    "channel": "PDF",
+    "receivedAt": "2026-10-05T11:00:00Z",
+    "text": "┌─ FACTURA SIMPLIFICADA ─────────────\n│ Ref: VR-2026-10B\n│ Emite: Valentina Ruiz\n│ Detalle: Copywriting adicional\n│ Importe total: $1.200.000\n│ Abonar a: ****4402\n└────────────────────────────────────\n\nDOCUMENTO FICTICIO · 30X HACKATHON",
+    "quotes": [
+      {
+        "field": "monto",
+        "text": "$1.200.000"
+      },
+      {
+        "field": "número",
+        "text": "VR-2026-10B"
+      },
+      {
+        "field": "cuenta bancaria",
+        "text": "****4402"
+      },
+      {
+        "field": "concepto",
+        "text": "Copywriting adicional"
+      }
+    ],
+    "method": "fixture"
+  },
+  {
+    "id": "hold-25",
+    "vendorRef": "rafael",
+    "vendorName": "Rafael Souza",
+    "invoiceNumber": "RS-80",
+    "businessId": null,
+    "amountText": "USD 1,500.00",
+    "currencyHint": null,
+    "period": "2026-11",
+    "concept": "Backend services November",
+    "bankLast4": "0001",
+    "channel": "PDF",
+    "receivedAt": "2026-10-05T12:00:00Z",
+    "text": "┌─ FACTURA SIMPLIFICADA ─────────────\n│ Ref: RS-80\n│ Emite: Rafael Souza\n│ Detalle: Backend services November\n│ Importe total: USD 1,500.00\n│ Abonar a: ****0001\n└────────────────────────────────────\n\nDOCUMENTO FICTICIO · 30X HACKATHON",
+    "quotes": [
+      {
+        "field": "monto",
+        "text": "USD 1,500.00"
+      },
+      {
+        "field": "número",
+        "text": "RS-80"
+      },
+      {
+        "field": "cuenta bancaria",
+        "text": "****0001"
+      },
+      {
+        "field": "concepto",
+        "text": "Backend services November"
+      }
+    ],
+    "method": "fixture"
+  }
+]

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DemoBadge, Logo } from "@/components/bullao/brand";
 import "@lovable.dev/cloud-auth-js/styles.css";
+import { startDemo } from "@/lib/demo-session";
 
 const NEXT_KEY = "bullao-next";
 
@@ -40,11 +41,13 @@ function AuthPage() {
 
   useEffect(() => {
     if (rawNext) sessionStorage.setItem(NEXT_KEY, oauthReturnPath(rawNext));
+    // A guest session must not satisfy a real-login return (e.g. connecting an assistant).
+    const usable = (s: { user: { is_anonymous?: boolean } } | null) => !!s && !(rawNext && s.user.is_anonymous);
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) { sessionStorage.removeItem(NEXT_KEY); navigate({ href: target, replace: true }); }
+      if (usable(data.session)) { sessionStorage.removeItem(NEXT_KEY); navigate({ href: target, replace: true }); }
     });
     const { data } = supabase.auth.onAuthStateChange((_e, session) => {
-      if (session) { sessionStorage.removeItem(NEXT_KEY); navigate({ href: target, replace: true }); }
+      if (usable(session)) { sessionStorage.removeItem(NEXT_KEY); navigate({ href: target, replace: true }); }
     });
     return () => data.subscription.unsubscribe();
   }, [target, rawNext, navigate]);
@@ -81,7 +84,18 @@ function AuthPage() {
           </div>
         ) : (
           <>
-            <div className="mt-6 grid gap-2">
+            {!rawNext && (
+              <>
+                <Button className="mt-6 w-full" size="lg" disabled={busy} onClick={async () => {
+                  setBusy(true); const r = await startDemo(); setBusy(false);
+                  if (!r.ok) toast.error(r.message); else navigate({ to: "/cuentas", replace: true });
+                }}>Ver la demo de Nodo Labs</Button>
+                <p className="mt-2 text-center text-xs text-muted-foreground">Sin crear cuenta. Tu propio octubre de prueba.</p>
+                <p className="mt-6 text-sm font-bold">Entrar con tu cuenta</p>
+              </>
+            )}
+            {rawNext && <p className="mt-6 text-sm">Para conectar un asistente necesitas entrar con tu cuenta.</p>}
+            <div className="mt-3 grid gap-2">
               <Button variant="outline" onClick={() => social("google")}>Continuar con Google</Button>
               <button type="button" className="lovable-auth-button" onClick={() => social("lovable")}>Continue with Lovable</button>
             </div>

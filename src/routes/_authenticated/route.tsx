@@ -12,19 +12,21 @@ export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async ({ location }) => {
     const { data } = await supabase.auth.getSession();
     if (!data.session) throw redirect({ to: "/auth", search: { next: location.href } });
-    return { email: data.session.user.email ?? "" };
+    return { email: data.session.user.email ?? "Invitado", guest: !!data.session.user.is_anonymous };
   },
   component: Layout,
 });
 
 const NAV = [
+  { to: "/bandeja", label: "Bandeja" },
   { to: "/cuentas", label: "Cuentas" },
   { to: "/acordado", label: "Lo acordado" },
   { to: "/reglas", label: "Reglas" },
+  { to: "/resultados", label: "Resultados" },
 ] as const;
 
 function Layout() {
-  const { email } = Route.useRouteContext();
+  const { email, guest } = Route.useRouteContext();
   const qc = useQueryClient();
   const navigate = useNavigate();
   const reset = useResetDemo();
@@ -33,7 +35,7 @@ function Layout() {
     await qc.cancelQueries();
     qc.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    navigate({ to: "/auth", search: {}, replace: true });
   }
 
   return (
@@ -53,10 +55,11 @@ function Layout() {
           <div className="ml-auto flex items-center gap-2">
             <span className="hidden lg:inline"><DemoBadge /></span>
             <Button variant="ghost" size="sm" disabled={reset.isPending} title="Reiniciar el mes de la demo"
-              onClick={() => reset.mutate(undefined, { onSuccess: () => toast("Octubre quedó como al principio.") })}>
+              onClick={() => reset.mutate(undefined, { onSuccess: () => toast("Listo: la bandeja tiene las 21 cuentas sin revisar.") })}>
               <RotateCcw /> <span className="hidden sm:inline">Reiniciar demo</span>
             </Button>
-            <Button variant="ghost" size="sm" onClick={signOut} title={email}><LogOut /></Button>
+            {guest && <span className="hidden text-xs text-muted-foreground sm:inline">Invitado</span>}
+            <Button variant="ghost" size="sm" onClick={signOut} title={guest ? "Salir de la demo" : email}><LogOut /></Button>
           </div>
         </div>
       </header>

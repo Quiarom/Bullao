@@ -2,6 +2,9 @@ import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/r
 import { useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { buildState } from "@/ap/engine";
+import { NODO_LABS } from "@/demo/nodo-labs";
+
+export const DATASET = NODO_LABS;
 import type { ApEvent } from "@/ap/types";
 
 export const eventsQuery = queryOptions({
@@ -15,13 +18,14 @@ export const eventsQuery = queryOptions({
 
 export function useApState() {
   const q = useQuery(eventsQuery);
-  const state = useMemo(() => (q.data ? buildState(q.data) : null), [q.data]);
+  const state = useMemo(() => (q.data ? buildState(DATASET, q.data) : null), [q.data]);
   return { ...q, state };
 }
 
-async function actorName() {
+export async function actorName() {
   const { data } = await supabase.auth.getUser();
   const u = data.user;
+  if (u?.is_anonymous) return "Invitado";
   return (u?.user_metadata?.["full_name"] as string | undefined) ?? u?.email?.split("@")[0] ?? "Operador";
 }
 

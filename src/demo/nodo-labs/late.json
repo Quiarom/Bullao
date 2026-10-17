@@ -1,0 +1,36 @@
+[
+  {
+    "id": "inv-11-nov",
+    "vendorRef": "hosting",
+    "vendorName": "Hosting Andes",
+    "invoiceNumber": "HA-1111",
+    "businessId": null,
+    "amountText": "USD 1,000.00",
+    "currencyHint": null,
+    "period": "2026-11",
+    "concept": "Servicio mensual",
+    "bankLast4": "3344",
+    "channel": "PDF",
+    "receivedAt": "2026-11-01T09:00:00Z",
+    "text": "HOSTING ANDES · ERP\nInvoice HA-1111 · Periodo 2026-11\nServicio mensual\nTotal: USD 1,000.00\nTransferir a ****3344\n\nDOCUMENTO FICTICIO · 30X HACKATHON",
+    "quotes": [
+      {
+        "field": "monto",
+        "text": "USD 1,000.00"
+      },
+      {
+        "field": "número",
+        "text": "HA-1111"
+      },
+      {
+        "field": "cuenta bancaria",
+        "text": "****3344"
+      },
+      {
+        "field": "concepto",
+        "text": "Servicio mensual"
+      }
+    ],
+    "method": "fixture"
+  }
+]
