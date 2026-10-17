@@ -21,7 +21,8 @@
     "country": "MX",
     "kind": "contractor",
     "bankLast4": "1029",
-    "sends": "CFDI 4.0 (XML + impresa)"
+    "sends": "CFDI 4.0 (XML + impresa)",
+    "taxId": "MEXL800101AB1"
   },
   {
     "id": "rafael",
@@ -37,7 +38,8 @@
     "country": "CO",
     "kind": "provider",
     "bankLast4": "9001",
-    "sends": "Factura electrónica DIAN"
+    "sends": "Factura electrónica DIAN",
+    "taxId": "900000000"
   },
   {
     "id": "hosting",

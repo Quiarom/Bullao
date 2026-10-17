@@ -72,37 +72,9 @@
   {
     "id": "inv-03",
     "caseNo": 3,
-    "vendorRef": "lucia",
-    "vendorName": "Lucía Méndez",
-    "invoiceNumber": "A-209",
-    "businessId": "6F1C2A90-0000-4D2E-9A11-FICTICIO0209",
-    "amountText": "$24,000.00",
-    "currencyHint": "MXN",
-    "period": "2026-09",
-    "concept": "Contenido septiembre",
-    "bankLast4": "1029",
     "channel": "XML CFDI",
     "receivedAt": "2026-10-01T11:00:00Z",
-    "method": "xml",
-    "text": "CFDI 4.0 · Representación impresa\nFolio: A-209\nFolio fiscal (UUID): 6F1C2A90-0000-4D2E-9A11-FICTICIO0209\nRFC emisor: MEXL800101XXX\nMoneda: MXN\nTotal: $24,000.00\nConcepto: Contenido septiembre\nCLABE ****1029\n\nDOCUMENTO FICTICIO · 30X HACKATHON",
-    "quotes": [
-      {
-        "field": "monto",
-        "text": "$24,000.00"
-      },
-      {
-        "field": "número",
-        "text": "A-209"
-      },
-      {
-        "field": "cuenta bancaria",
-        "text": "****1029"
-      },
-      {
-        "field": "concepto",
-        "text": "Contenido septiembre"
-      }
-    ]
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/4\" xmlns:tfd=\"http://www.sat.gob.mx/TimbreFiscalDigital\" Version=\"4.0\" Serie=\"A\" Folio=\"A-209\" Fecha=\"2026-09-30T18:00:00\" Moneda=\"MXN\" SubTotal=\"24000.00\" Total=\"24000.00\" TipoDeComprobante=\"I\">\n  <cfdi:Emisor Rfc=\"MEXL800101AB1\" Nombre=\"Lucía Méndez\" RegimenFiscal=\"612\"/>\n  <cfdi:Receptor Rfc=\"XEXX010101000\" Nombre=\"Nodo Labs Inc.\" UsoCFDI=\"S01\"/>\n  <cfdi:Conceptos>\n    <cfdi:Concepto ClaveProdServ=\"82101500\" Cantidad=\"1\" Descripcion=\"Contenido septiembre\" ValorUnitario=\"24000.00\" Importe=\"24000.00\"/>\n  </cfdi:Conceptos>\n  <cfdi:Complemento>\n    <tfd:TimbreFiscalDigital Version=\"1.1\" UUID=\"6F1C2A90-0000-4D2E-9A11-FICTICIO0209\" FechaTimbrado=\"2026-09-30T18:00:00\"/>\n  </cfdi:Complemento>\n  <cfdi:Addenda>\n    <Pago Clabe=\"****1029\"/>\n  </cfdi:Addenda>\n</cfdi:Comprobante>\n<!-- DOCUMENTO FICTICIO · 30X HACKATHON -->"
   },
   {
     "id": "inv-04",
@@ -204,37 +176,9 @@
   {
     "id": "inv-08a",
     "caseNo": 8,
-    "vendorRef": "pixel",
-    "vendorName": "Estudio Pixel SAS",
-    "invoiceNumber": "FE-310",
-    "businessId": "CUFE-a91f0c7e-FICTICIO-310",
-    "amountText": "$1.500.000",
-    "currencyHint": "COP",
-    "period": "2026-10",
-    "concept": "Proyecto landing",
-    "bankLast4": "9001",
     "channel": "XML DIAN",
     "receivedAt": "2026-10-02T09:00:00Z",
-    "method": "xml",
-    "text": "Factura electrónica de venta FE-310\nCUFE: CUFE-a91f0c7e-FICTICIO-310\nNIT emisor: 900.000.000-0 (ficticio)\nProyecto landing\nTotal: $1.500.000 COP\nCuenta corriente ****9001\n\nDOCUMENTO FICTICIO · 30X HACKATHON",
-    "quotes": [
-      {
-        "field": "monto",
-        "text": "$1.500.000"
-      },
-      {
-        "field": "número",
-        "text": "FE-310"
-      },
-      {
-        "field": "cuenta bancaria",
-        "text": "****9001"
-      },
-      {
-        "field": "concepto",
-        "text": "Proyecto landing"
-      }
-    ]
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<AttachedDocument xmlns=\"urn:oasis:names:specification:ubl:schema:xsd:AttachedDocument-2\" xmlns:cac=\"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2\" xmlns:cbc=\"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2\">\n  <cbc:ID>AD-FE-310</cbc:ID>\n  <cac:Attachment><cac:ExternalReference><cbc:MimeCode>text/xml</cbc:MimeCode><cbc:Description><![CDATA[<Invoice xmlns=\"urn:oasis:names:specification:ubl:schema:xsd:Invoice-2\" xmlns:cac=\"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2\" xmlns:cbc=\"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2\">\n      <cbc:ID>FE-310</cbc:ID>\n      <cbc:UUID schemeName=\"CUFE-SHA384\">CUFE-a91f0c7e-FICTICIO-310</cbc:UUID>\n      <cbc:IssueDate>2026-10-02</cbc:IssueDate>\n      <cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode>\n      <cac:AccountingSupplierParty><cac:Party>\n        <cac:PartyName><cbc:Name>Estudio Pixel SAS</cbc:Name></cac:PartyName>\n        <cac:PartyTaxScheme><cbc:CompanyID schemeName=\"31\">900000000</cbc:CompanyID></cac:PartyTaxScheme>\n      </cac:Party></cac:AccountingSupplierParty>\n      <cac:PaymentMeans><cac:PayeeFinancialAccount><cbc:ID>****9001</cbc:ID></cac:PayeeFinancialAccount></cac:PaymentMeans>\n      <cac:LegalMonetaryTotal><cbc:PayableAmount currencyID=\"COP\">1500000.00</cbc:PayableAmount></cac:LegalMonetaryTotal>\n      <cac:InvoiceLine><cbc:ID>1</cbc:ID><cac:Item><cbc:Description>Proyecto landing</cbc:Description></cac:Item></cac:InvoiceLine>\n    </Invoice>]]></cbc:Description></cac:ExternalReference></cac:Attachment>\n</AttachedDocument>\n<!-- DOCUMENTO FICTICIO · 30X HACKATHON -->"
   },
   {
     "id": "inv-20",
@@ -344,37 +288,9 @@
   {
     "id": "inv-08b",
     "caseNo": 8,
-    "vendorRef": "pixel",
-    "vendorName": "Estudio Pixel SAS",
-    "invoiceNumber": "FE-310",
-    "businessId": "CUFE-a91f0c7e-FICTICIO-310",
-    "amountText": "$1.500.000",
-    "currencyHint": "COP",
-    "period": "2026-10",
-    "concept": "Proyecto landing",
-    "bankLast4": "9001",
     "channel": "correo",
     "receivedAt": "2026-10-03T08:00:00Z",
-    "method": "xml",
-    "text": "Reenvío AttachedDocument\nFactura electrónica de venta FE-310\nCUFE: CUFE-a91f0c7e-FICTICIO-310\nProyecto landing\nTotal: $1.500.000 COP\nCuenta corriente ****9001\n\nDOCUMENTO FICTICIO · 30X HACKATHON",
-    "quotes": [
-      {
-        "field": "monto",
-        "text": "$1.500.000"
-      },
-      {
-        "field": "número",
-        "text": "FE-310"
-      },
-      {
-        "field": "cuenta bancaria",
-        "text": "****9001"
-      },
-      {
-        "field": "concepto",
-        "text": "Proyecto landing"
-      }
-    ]
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<AttachedDocument xmlns=\"urn:oasis:names:specification:ubl:schema:xsd:AttachedDocument-2\" xmlns:cac=\"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2\" xmlns:cbc=\"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2\">\n  <cbc:ID>AD-FE-310</cbc:ID>\n  <cac:Attachment><cac:ExternalReference><cbc:MimeCode>text/xml</cbc:MimeCode><cbc:Description><![CDATA[<Invoice xmlns=\"urn:oasis:names:specification:ubl:schema:xsd:Invoice-2\" xmlns:cac=\"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2\" xmlns:cbc=\"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2\">\n      <cbc:ID>FE-310</cbc:ID>\n      <cbc:UUID schemeName=\"CUFE-SHA384\">CUFE-a91f0c7e-FICTICIO-310</cbc:UUID>\n      <cbc:IssueDate>2026-10-02</cbc:IssueDate>\n      <cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode>\n      <cac:AccountingSupplierParty><cac:Party>\n        <cac:PartyName><cbc:Name>Estudio Pixel SAS</cbc:Name></cac:PartyName>\n        <cac:PartyTaxScheme><cbc:CompanyID schemeName=\"31\">900000000</cbc:CompanyID></cac:PartyTaxScheme>\n      </cac:Party></cac:AccountingSupplierParty>\n      <cac:PaymentMeans><cac:PayeeFinancialAccount><cbc:ID>****9001</cbc:ID></cac:PayeeFinancialAccount></cac:PaymentMeans>\n      <cac:LegalMonetaryTotal><cbc:PayableAmount currencyID=\"COP\">1500000.00</cbc:PayableAmount></cac:LegalMonetaryTotal>\n      <cac:InvoiceLine><cbc:ID>1</cbc:ID><cac:Item><cbc:Description>Proyecto landing</cbc:Description></cac:Item></cac:InvoiceLine>\n    </Invoice>]]></cbc:Description></cac:ExternalReference></cac:Attachment>\n</AttachedDocument>\n<!-- DOCUMENTO FICTICIO · 30X HACKATHON -->"
   },
   {
     "id": "inv-09",
@@ -480,37 +396,9 @@
   {
     "id": "inv-12",
     "caseNo": 12,
-    "vendorRef": "lucia",
-    "vendorName": "Lucía Méndez",
-    "invoiceNumber": "A-214",
-    "businessId": "6F1C2A90-0000-4D2E-9A11-FICTICIO0214",
-    "amountText": "$26,000.00",
-    "currencyHint": "MXN",
-    "period": "2026-10",
-    "concept": "Contenido octubre",
-    "bankLast4": "1029",
     "channel": "XML CFDI",
     "receivedAt": "2026-10-03T12:00:00Z",
-    "method": "xml",
-    "text": "CFDI 4.0 · Representación impresa\nFolio: A-214\nFolio fiscal (UUID): 6F1C2A90-0000-4D2E-9A11-FICTICIO0214\nMoneda: MXN\nTotal: $26,000.00\nContenido octubre\nCLABE ****1029\n\nDOCUMENTO FICTICIO · 30X HACKATHON",
-    "quotes": [
-      {
-        "field": "monto",
-        "text": "$26,000.00"
-      },
-      {
-        "field": "número",
-        "text": "A-214"
-      },
-      {
-        "field": "cuenta bancaria",
-        "text": "****1029"
-      },
-      {
-        "field": "concepto",
-        "text": "Contenido octubre"
-      }
-    ]
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<cfdi:Comprobante xmlns:cfdi=\"http://www.sat.gob.mx/cfd/4\" xmlns:tfd=\"http://www.sat.gob.mx/TimbreFiscalDigital\" Version=\"4.0\" Serie=\"A\" Folio=\"A-214\" Fecha=\"2026-10-03T12:00:00\" Moneda=\"MXN\" SubTotal=\"26000.00\" Total=\"26000.00\" TipoDeComprobante=\"I\">\n  <cfdi:Emisor Rfc=\"MEXL800101AB1\" Nombre=\"Lucía Méndez\" RegimenFiscal=\"612\"/>\n  <cfdi:Receptor Rfc=\"XEXX010101000\" Nombre=\"Nodo Labs Inc.\" UsoCFDI=\"S01\"/>\n  <cfdi:Conceptos>\n    <cfdi:Concepto ClaveProdServ=\"82101500\" Cantidad=\"1\" Descripcion=\"Contenido octubre\" ValorUnitario=\"26000.00\" Importe=\"26000.00\"/>\n  </cfdi:Conceptos>\n  <cfdi:Complemento>\n    <tfd:TimbreFiscalDigital Version=\"1.1\" UUID=\"6F1C2A90-0000-4D2E-9A11-FICTICIO0214\" FechaTimbrado=\"2026-10-03T12:00:00\"/>\n  </cfdi:Complemento>\n  <cfdi:Addenda>\n    <Pago Clabe=\"****1029\"/>\n  </cfdi:Addenda>\n</cfdi:Comprobante>\n<!-- DOCUMENTO FICTICIO · 30X HACKATHON -->"
   },
   {
     "id": "inv-13",
@@ -550,37 +438,9 @@
   {
     "id": "inv-14",
     "caseNo": 14,
-    "vendorRef": "pixel",
-    "vendorName": "Estudio Pixel SAS",
-    "invoiceNumber": "FE-311",
-    "businessId": "CUFE-b22d81aa-FICTICIO-311",
-    "amountText": "USD 2,400.00",
-    "currencyHint": null,
-    "period": "2026-10",
-    "concept": "Proyecto rediseño app",
-    "bankLast4": "9001",
     "channel": "XML DIAN",
     "receivedAt": "2026-10-03T14:00:00Z",
-    "method": "xml",
-    "text": "Factura electrónica de venta FE-311\nCUFE: CUFE-b22d81aa-FICTICIO-311\nProyecto rediseño app\nTotal: USD 2,400.00\nCuenta corriente ****9001\n\nDOCUMENTO FICTICIO · 30X HACKATHON",
-    "quotes": [
-      {
-        "field": "monto",
-        "text": "USD 2,400.00"
-      },
-      {
-        "field": "número",
-        "text": "FE-311"
-      },
-      {
-        "field": "cuenta bancaria",
-        "text": "****9001"
-      },
-      {
-        "field": "concepto",
-        "text": "Proyecto rediseño app"
-      }
-    ]
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<AttachedDocument xmlns=\"urn:oasis:names:specification:ubl:schema:xsd:AttachedDocument-2\" xmlns:cac=\"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2\" xmlns:cbc=\"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2\">\n  <cbc:ID>AD-FE-311</cbc:ID>\n  <cac:Attachment><cac:ExternalReference><cbc:MimeCode>text/xml</cbc:MimeCode><cbc:Description><![CDATA[<Invoice xmlns=\"urn:oasis:names:specification:ubl:schema:xsd:Invoice-2\" xmlns:cac=\"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2\" xmlns:cbc=\"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2\">\n      <cbc:ID>FE-311</cbc:ID>\n      <cbc:UUID schemeName=\"CUFE-SHA384\">CUFE-b22d81aa-FICTICIO-311</cbc:UUID>\n      <cbc:IssueDate>2026-10-03</cbc:IssueDate>\n      <cbc:DocumentCurrencyCode>USD</cbc:DocumentCurrencyCode>\n      <cac:AccountingSupplierParty><cac:Party>\n        <cac:PartyName><cbc:Name>Estudio Pixel SAS</cbc:Name></cac:PartyName>\n        <cac:PartyTaxScheme><cbc:CompanyID schemeName=\"31\">900000000</cbc:CompanyID></cac:PartyTaxScheme>\n      </cac:Party></cac:AccountingSupplierParty>\n      <cac:PaymentMeans><cac:PayeeFinancialAccount><cbc:ID>****9001</cbc:ID></cac:PayeeFinancialAccount></cac:PaymentMeans>\n      <cac:LegalMonetaryTotal><cbc:PayableAmount currencyID=\"USD\">2400.00</cbc:PayableAmount></cac:LegalMonetaryTotal>\n      <cac:InvoiceLine><cbc:ID>1</cbc:ID><cac:Item><cbc:Description>Proyecto rediseño app</cbc:Description></cac:Item></cac:InvoiceLine>\n    </Invoice>]]></cbc:Description></cac:ExternalReference></cac:Attachment>\n</AttachedDocument>\n<!-- DOCUMENTO FICTICIO · 30X HACKATHON -->"
   },
   {
     "id": "inv-15",
