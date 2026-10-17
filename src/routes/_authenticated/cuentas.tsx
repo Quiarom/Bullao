@@ -33,6 +33,12 @@ function Cuentas() {
   if (isLoading) return <Loading />;
   if (isError || !state) return <ErrorState onRetry={() => refetch()} />;
 
+  if (state.invoices.length === 0) return (
+    <div className="rise">
+      <h1 className="text-3xl font-extrabold md:text-4xl">Cuentas</h1>
+      <div className="mt-6"><Empty>Todavía no reviso nada. Ve a la <Link to="/bandeja" className="font-bold text-primary underline">bandeja</Link> y pulsa Revisar.</Empty></div>
+    </div>
+  );
   const rows = state.invoices.filter((v) => f === "ALL" || v.current.outcome === f);
   const order: Record<Outcome, number> = { REVIEW: 0, BLOCKED: 1, READY: 2 };
   rows.sort((a, b) => order[a.current.outcome] - order[b.current.outcome]);

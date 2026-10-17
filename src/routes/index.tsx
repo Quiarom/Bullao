@@ -1,4 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { toast } from "sonner";
+import { startDemo } from "@/lib/demo-session";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DemoBadge, Logo, StatusChip } from "@/components/bullao/brand";
@@ -25,11 +28,20 @@ const NOISE = [
 ];
 
 function Landing() {
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState(false);
+  async function demo() {
+    setBusy(true);
+    const r = await startDemo();
+    setBusy(false);
+    if (!r.ok) toast.error(r.message);
+    else navigate({ to: "/cuentas" });
+  }
   return (
     <div className="min-h-screen paper-ruled">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <Logo />
-        <Button asChild variant="ghost"><Link to="/auth">Entrar</Link></Button>
+        <Button asChild variant="ghost"><Link to="/auth" search={{}}>Entrar con tu cuenta</Link></Button>
       </header>
       <main className="mx-auto grid max-w-6xl gap-14 px-6 pb-24 pt-10 md:grid-cols-[1.15fr_1fr] md:pt-20">
         <section className="rise">
@@ -43,7 +55,8 @@ function Landing() {
           </p>
           <p className="mt-4 max-w-lg text-lg font-bold">Cuando autorizas algo “solo esta vez”, sabe que fue solo esta vez.</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg"><Link to="/auth">Revisar el mes de Nodo Labs <ArrowRight /></Link></Button>
+            <Button size="lg" onClick={demo} disabled={busy}>Ver la demo de Nodo Labs <ArrowRight /></Button>
+            <Button asChild size="lg" variant="outline"><Link to="/auth" search={{}}>Entrar con tu cuenta</Link></Button>
           </div>
         </section>
         <section className="relative flex flex-col gap-4" aria-hidden>
