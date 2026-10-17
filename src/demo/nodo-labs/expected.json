@@ -1,0 +1,32 @@
+{
+  "_nota": "Escritos antes de programar. No se modifican para que pase una implementación.",
+  "inbox": {
+    "inv-01": "READY",
+    "inv-02": "READY",
+    "inv-03": "READY",
+    "inv-04": "READY",
+    "inv-05": "READY",
+    "inv-06": "READY",
+    "inv-07": "BLOCKED",
+    "inv-08a": "READY",
+    "inv-08b": "BLOCKED",
+    "inv-09": "REVIEW",
+    "inv-10": "REVIEW",
+    "inv-11": "REVIEW",
+    "inv-12": "REVIEW",
+    "inv-13": "BLOCKED",
+    "inv-14": "REVIEW",
+    "inv-15": "REVIEW",
+    "inv-16": "READY",
+    "inv-17": "BLOCKED",
+    "inv-19": "REVIEW",
+    "inv-20": "READY",
+    "inv-21": "REVIEW"
+  },
+  "holdout": {
+    "hold-22": "BLOCKED",
+    "hold-23": "REVIEW",
+    "hold-24": "BLOCKED",
+    "hold-25": "REVIEW"
+  }
+}
