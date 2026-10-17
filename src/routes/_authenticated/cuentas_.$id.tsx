@@ -5,7 +5,8 @@ import { toast } from "sonner";
 import { useApAction, useApState } from "@/hooks/use-ap";
 import { monthName, OUTCOME_LABEL } from "@/ap/engine";
 import { formatMoney } from "@/ap/money";
-import type { Agreement, InvoiceDraft } from "@/ap/types";
+import type { Agreement } from "@/ap/types";
+import { ArrivedDocument } from "@/components/bullao/document";
 import { Amount, StatusChip } from "@/components/bullao/brand";
 import { Empty, ErrorState, Loading } from "@/components/bullao/states";
 import { Button } from "@/components/ui/button";
@@ -130,7 +131,7 @@ function Ficha() {
       <section className="rounded-xl border bg-card p-5">
         <h2 className="text-lg font-extrabold">El documento</h2>
         <p className="mt-1 text-xs text-muted-foreground">En amarillo, la frase exacta de donde salió cada dato.</p>
-        <Doc inv={inv} />
+        <ArrivedDocument doc={inv} draft={inv} className="mt-4" />
       </section>
 
       <section className="rounded-xl border bg-card p-5">
@@ -189,20 +190,3 @@ function TimelineItem({ a, period }: { a: Agreement; period: string }) {
 
 const nextOf = (p: string) => { const y = +p.slice(0, 4), m = +p.slice(5, 7); return m === 12 ? `${y + 1}-01` : `${y}-${String(m + 1).padStart(2, "0")}`; };
 
-function Doc({ inv }: { inv: InvoiceDraft }) {
-  const ranges: [number, number][] = [];
-  for (const q of inv.quotes) {
-    const i = inv.text.indexOf(q.text);
-    if (i >= 0 && !ranges.some(([s, e]) => i < e && i + q.text.length > s)) ranges.push([i, i + q.text.length]);
-  }
-  ranges.sort((x, y) => x[0] - y[0]);
-  const parts: React.ReactNode[] = [];
-  let cur = 0;
-  ranges.forEach(([s, e], k) => {
-    parts.push(inv.text.slice(cur, s));
-    parts.push(<mark key={k} className="mark-quote">{inv.text.slice(s, e)}</mark>);
-    cur = e;
-  });
-  parts.push(inv.text.slice(cur));
-  return <pre className="amount mt-4 whitespace-pre-wrap rounded-lg border bg-background p-5 text-sm leading-7 paper-ruled">{parts}</pre>;
-}

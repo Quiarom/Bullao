@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedAcordadoRouteImport } from './routes/_authenticated/acordado'
+import { Route as AuthenticatedBandejaRouteImport } from './routes/_authenticated/bandeja'
 import { Route as AuthenticatedCuentasRouteImport } from './routes/_authenticated/cuentas'
 import { Route as AuthenticatedReglasRouteImport } from './routes/_authenticated/reglas'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
@@ -50,6 +51,11 @@ const AuthenticatedAcordadoRoute = AuthenticatedAcordadoRouteImport.update({
   path: '/acordado',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedBandejaRoute = AuthenticatedBandejaRouteImport.update({
+  id: '/bandeja',
+  path: '/bandeja',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedCuentasRoute = AuthenticatedCuentasRouteImport.update({
   id: '/cuentas',
   path: '/cuentas',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/mcp': typeof McpRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/acordado': typeof AuthenticatedAcordadoRoute
+  '/bandeja': typeof AuthenticatedBandejaRoute
   '/cuentas': typeof AuthenticatedCuentasRoute
   '/reglas': typeof AuthenticatedReglasRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/mcp': typeof McpRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/acordado': typeof AuthenticatedAcordadoRoute
+  '/bandeja': typeof AuthenticatedBandejaRoute
   '/cuentas': typeof AuthenticatedCuentasRoute
   '/reglas': typeof AuthenticatedReglasRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/mcp': typeof McpRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/acordado': typeof AuthenticatedAcordadoRoute
+  '/_authenticated/bandeja': typeof AuthenticatedBandejaRoute
   '/_authenticated/cuentas': typeof AuthenticatedCuentasRoute
   '/_authenticated/reglas': typeof AuthenticatedReglasRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/.well-known/oauth-protected-resource'
     | '/acordado'
+    | '/bandeja'
     | '/cuentas'
     | '/reglas'
     | '/.lovable/oauth/consent'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/.well-known/oauth-protected-resource'
     | '/acordado'
+    | '/bandeja'
     | '/cuentas'
     | '/reglas'
     | '/.lovable/oauth/consent'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/acordado'
+    | '/_authenticated/bandeja'
     | '/_authenticated/cuentas'
     | '/_authenticated/reglas'
     | '/.lovable/oauth/consent'
@@ -196,6 +208,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAcordadoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/bandeja': {
+      id: '/_authenticated/bandeja'
+      path: '/bandeja'
+      fullPath: '/bandeja'
+      preLoaderRoute: typeof AuthenticatedBandejaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/cuentas': {
       id: '/_authenticated/cuentas'
       path: '/cuentas'
@@ -229,6 +248,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAcordadoRoute: typeof AuthenticatedAcordadoRoute
+  AuthenticatedBandejaRoute: typeof AuthenticatedBandejaRoute
   AuthenticatedCuentasRoute: typeof AuthenticatedCuentasRoute
   AuthenticatedReglasRoute: typeof AuthenticatedReglasRoute
   AuthenticatedCuentasIdRoute: typeof AuthenticatedCuentasIdRoute
@@ -236,6 +256,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAcordadoRoute: AuthenticatedAcordadoRoute,
+  AuthenticatedBandejaRoute: AuthenticatedBandejaRoute,
   AuthenticatedCuentasRoute: AuthenticatedCuentasRoute,
   AuthenticatedReglasRoute: AuthenticatedReglasRoute,
   AuthenticatedCuentasIdRoute: AuthenticatedCuentasIdRoute,
