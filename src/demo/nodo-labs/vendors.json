@@ -1,0 +1,106 @@
+[
+  {
+    "id": "ana",
+    "name": "Ana Ríos",
+    "country": "CO",
+    "kind": "contractor",
+    "bankLast4": "4821",
+    "sends": "Cuenta de cobro en PDF"
+  },
+  {
+    "id": "camilo",
+    "name": "Camilo Peña",
+    "country": "CO",
+    "kind": "contractor",
+    "bankLast4": "7730",
+    "sends": "Cuenta de cobro por correo o WhatsApp"
+  },
+  {
+    "id": "lucia",
+    "name": "Lucía Méndez",
+    "country": "MX",
+    "kind": "contractor",
+    "bankLast4": "1029",
+    "sends": "CFDI 4.0 (XML + impresa)"
+  },
+  {
+    "id": "rafael",
+    "name": "Rafael Souza",
+    "country": "BR",
+    "kind": "contractor",
+    "bankLast4": "5512",
+    "sends": "Invoice en inglés"
+  },
+  {
+    "id": "pixel",
+    "name": "Estudio Pixel SAS",
+    "country": "CO",
+    "kind": "provider",
+    "bankLast4": "9001",
+    "sends": "Factura electrónica DIAN"
+  },
+  {
+    "id": "hosting",
+    "name": "Hosting Andes",
+    "country": "—",
+    "kind": "provider",
+    "bankLast4": "3344",
+    "sends": "Invoice estilo ERP"
+  },
+  {
+    "id": "trazo",
+    "name": "Trazo Design",
+    "country": "US",
+    "kind": "software",
+    "bankLast4": null,
+    "sends": "Recibo en el correo"
+  },
+  {
+    "id": "nimbus",
+    "name": "Nimbus Analytics",
+    "country": "US",
+    "kind": "software",
+    "bankLast4": null,
+    "sends": "Recibo en el correo"
+  },
+  {
+    "id": "sofia",
+    "name": "Sofía Herrera",
+    "country": "CO",
+    "kind": "contractor",
+    "bankLast4": "6610",
+    "sends": "Cuenta de cobro en PDF"
+  },
+  {
+    "id": "valentina",
+    "name": "Valentina Ruiz",
+    "country": "CO",
+    "kind": "contractor",
+    "bankLast4": "4402",
+    "sends": "Cuenta de cobro en Word"
+  },
+  {
+    "id": "julian",
+    "name": "Julián Ortiz",
+    "country": "CO",
+    "kind": "contractor",
+    "bankLast4": "2280",
+    "sends": "Cuenta de cobro en PDF"
+  },
+  {
+    "id": "tomas",
+    "name": "Tomás Vega",
+    "country": "CO",
+    "kind": "contractor",
+    "bankLast4": "1188",
+    "sends": "Cuenta de cobro por correo"
+  },
+  {
+    "id": "ines",
+    "name": "Inés Castro",
+    "country": "CO",
+    "kind": "contractor",
+    "bankLast4": "5050",
+    "sends": "Cuenta de cobro en PDF"
+  }
+]

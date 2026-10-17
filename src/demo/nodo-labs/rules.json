@@ -1,0 +1,20 @@
+{
+  "version": "reglas-v1",
+  "autoLimit": {
+    "USD": 150000,
+    "COP": 600000000,
+    "MXN": 3000000,
+    "BRL": 800000
+  },
+  "budget": {
+    "USD": 900000,
+    "COP": 1200000000,
+    "MXN": 3000000,
+    "BRL": 0
+  },
+  "tolerancePct": {
+    "contractor": 0,
+    "software": 3,
+    "provider": 0
+  }
+}

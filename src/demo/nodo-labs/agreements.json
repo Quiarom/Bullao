@@ -1,0 +1,308 @@
+[
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": "USD 1.200 mensuales",
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-ana",
+    "vendorId": "ana",
+    "service": "Desarrollo frontend",
+    "kind": "BASE",
+    "amount": {
+      "minor": 120000,
+      "currency": "USD"
+    },
+    "effectiveFrom": "2026-01"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": "COP 4.800.000 al mes",
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-camilo",
+    "vendorId": "camilo",
+    "service": "Soporte QA",
+    "kind": "BASE",
+    "amount": {
+      "minor": 480000000,
+      "currency": "COP"
+    },
+    "effectiveFrom": "2026-01"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": "MXN 24.000 mensuales",
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-lucia",
+    "vendorId": "lucia",
+    "service": "Contenido",
+    "kind": "BASE",
+    "amount": {
+      "minor": 2400000,
+      "currency": "MXN"
+    },
+    "effectiveFrom": "2026-01"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "PROPOSED",
+    "quote": "propongo subir a MXN 26.000 desde octubre",
+    "approvedBy": null,
+    "approvedAt": null,
+    "id": "ag-lucia-up",
+    "vendorId": "lucia",
+    "service": "Contenido",
+    "kind": "MODIFICATION",
+    "amount": {
+      "minor": 2600000,
+      "currency": "MXN"
+    },
+    "effectiveFrom": "2026-10"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": "USD 1,500 per month",
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-rafael",
+    "vendorId": "rafael",
+    "service": "Backend",
+    "kind": "BASE",
+    "amount": {
+      "minor": 150000,
+      "currency": "USD"
+    },
+    "effectiveFrom": "2026-01"
+  },
+  {
+    "effectiveTo": null,
+    "period": "2026-10",
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": "Landing: COP 1.500.000",
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-pixel-landing",
+    "vendorId": "pixel",
+    "service": "Proyecto landing",
+    "kind": "PROJECT",
+    "amount": {
+      "minor": 150000000,
+      "currency": "COP"
+    },
+    "effectiveFrom": "2026-10"
+  },
+  {
+    "effectiveTo": null,
+    "period": "2026-10",
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": "Rediseño app: USD 2.400",
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-pixel-app",
+    "vendorId": "pixel",
+    "service": "Proyecto rediseño app",
+    "kind": "PROJECT",
+    "amount": {
+      "minor": 240000,
+      "currency": "USD"
+    },
+    "effectiveFrom": "2026-10"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": "USD 800 al mes desde enero",
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-hosting",
+    "vendorId": "hosting",
+    "service": "Servicio mensual",
+    "kind": "BASE",
+    "amount": {
+      "minor": 80000,
+      "currency": "USD"
+    },
+    "effectiveFrom": "2026-01"
+  },
+  {
+    "effectiveTo": "2026-05",
+    "period": "2026-05",
+    "invoiceId": null,
+    "status": "USED",
+    "quote": "dale, por esta vez, solo mayo",
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-05-28",
+    "id": "ag-hosting-may",
+    "vendorId": "hosting",
+    "service": "Servicio mensual",
+    "kind": "ONE_TIME",
+    "amount": {
+      "minor": 20000,
+      "currency": "USD"
+    },
+    "effectiveFrom": "2026-05"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "PROPOSED",
+    "quote": "nueva tarifa USD 1.000 desde noviembre",
+    "approvedBy": null,
+    "approvedAt": null,
+    "id": "ag-hosting-nov",
+    "vendorId": "hosting",
+    "service": "Servicio mensual",
+    "kind": "MODIFICATION",
+    "amount": {
+      "minor": 100000,
+      "currency": "USD"
+    },
+    "effectiveFrom": "2026-11"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": null,
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-trazo",
+    "vendorId": "trazo",
+    "service": "Plan equipo",
+    "kind": "BASE",
+    "amount": {
+      "minor": 4500,
+      "currency": "USD"
+    },
+    "effectiveFrom": "2026-01"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": null,
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-nimbus",
+    "vendorId": "nimbus",
+    "service": "Plan pro",
+    "kind": "BASE",
+    "amount": {
+      "minor": 30000,
+      "currency": "USD"
+    },
+    "effectiveFrom": "2026-01"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": null,
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-sofia",
+    "vendorId": "sofia",
+    "service": "Diseño UX",
+    "kind": "BASE",
+    "amount": {
+      "minor": 400000000,
+      "currency": "COP"
+    },
+    "effectiveFrom": "2026-03"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": null,
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-valentina",
+    "vendorId": "valentina",
+    "service": "Copywriting",
+    "kind": "BASE",
+    "amount": {
+      "minor": 120000000,
+      "currency": "COP"
+    },
+    "effectiveFrom": "2026-02"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": null,
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-julian",
+    "vendorId": "julian",
+    "service": "Data",
+    "kind": "BASE",
+    "amount": {
+      "minor": 350000000,
+      "currency": "COP"
+    },
+    "effectiveFrom": "2026-04"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": null,
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-tomas",
+    "vendorId": "tomas",
+    "service": "Soporte",
+    "kind": "BASE",
+    "amount": {
+      "minor": 90000,
+      "currency": "USD"
+    },
+    "effectiveFrom": "2026-01"
+  },
+  {
+    "effectiveTo": null,
+    "period": null,
+    "invoiceId": null,
+    "status": "APPROVED",
+    "quote": null,
+    "approvedBy": "Laura (finanzas)",
+    "approvedAt": "2026-01-02",
+    "id": "ag-ines",
+    "vendorId": "ines",
+    "service": "Traducción",
+    "kind": "BASE",
+    "amount": {
+      "minor": 70000,
+      "currency": "USD"
+    },
+    "effectiveFrom": "2026-01"
+  }
+]
