@@ -94,5 +94,5 @@ export function readXml(xml: string, vendors: Vendor[]): XmlReading {
 }
 
 export function xmlDocToDraft(d: { id: string; caseNo?: number; channel: Channel; receivedAt: string; xml: string }, vendors: Vendor[]): InvoiceDraft {
-  return { ...readXml(d.xml, vendors), id: d.id, caseNo: d.caseNo, channel: d.channel, receivedAt: d.receivedAt };
+  return { ...readXml(d.xml, vendors), id: d.id, ...(d.caseNo != null ? { caseNo: d.caseNo } : {}), channel: d.channel, receivedAt: d.receivedAt };
 }
