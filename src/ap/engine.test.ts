@@ -53,9 +53,11 @@ describe("solo esta vez", () => {
     expect(oct.history).toHaveLength(2);
   });
 
-  it("visto bueno sin presupuesto queda bloqueado al reevaluar (Mateo)", () => {
-    const s = buildState([ev("approve_invoice", { invoiceId: "inv-09", contentHash: hashOf("inv-09") })]);
-    expect(out(s, "inv-09")).toBe("BLOCKED");
+  it("visto bueno sin presupuesto queda bloqueado al reevaluar (Estudio Pixel)", () => {
+    const ok = (id: string) => ev("approve_invoice", { invoiceId: id, contentHash: hashOf(id) });
+    const s = buildState([ok("inv-11"), ok("inv-19"), ok("inv-21"), ok("inv-15"), ok("inv-14")]);
+    expect(out(s, "inv-15")).toBe("READY");
+    expect(out(s, "inv-14")).toBe("BLOCKED");
   });
 
   it("autorización atada al contenido", () => {

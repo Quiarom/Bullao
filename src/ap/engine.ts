@@ -27,14 +27,15 @@ export type MonthState = {
 export type Agreed = { base: Agreement | null; extras: Agreement[]; proposed: Agreement[]; allowed: Money | null };
 
 /** Lo acordado vigente para un proveedor y mes cobrado. Solo cuenta lo APROBADO. */
-export function findAgreed(agreements: Agreement[], vendorId: string, period: string): Agreed {
+export function findAgreed(agreements: Agreement[], vendorId: string, period: string, prefer?: Currency): Agreed {
   const mine = agreements.filter((a) => a.vendorId === vendorId);
   const base = mine
     .filter((a) => (a.kind === "BASE" || a.kind === "MODIFICATION") && a.status === "APPROVED" && covers(a, period))
     .sort((x, y) => (x.effectiveFrom < y.effectiveFrom ? 1 : -1))[0] ?? null;
   const extras = mine.filter((a) => (a.kind === "ONE_TIME" || a.kind === "PROJECT") && a.status === "APPROVED" && a.period === period);
   const proposed = mine.filter((a) => a.status === "PROPOSED" && (a.period === period || covers(a, period)));
-  const parts = [base, ...extras].filter(Boolean) as Agreement[];
+  const all = [base, ...extras].filter(Boolean) as Agreement[];
+  const parts = prefer && all.some((p) => p.amount.currency === prefer) ? all.filter((p) => p.amount.currency === prefer) : all;
   let allowed: Money | null = null;
   if (parts.length) {
     const cur = parts[0].amount.currency;
@@ -102,7 +103,7 @@ export function evaluate({ invoice: inv, rules, vendors, agreements, month }: Ev
   checks.push({ id: "vendor", kind: "REVIEW", ok: !!vendor, message: `${vname} no está en tu lista de proveedores.`, okMessage: `${vname} está en tu lista de proveedores.` });
 
   // agreement
-  const agreed = vendor ? findAgreed(agreements, vendor.id, inv.period) : { base: null, extras: [], proposed: [], allowed: null };
+  const agreed = vendor ? findAgreed(agreements, vendor.id, inv.period, amount?.currency) : { base: null, extras: [], proposed: [], allowed: null };
   checks.push({ id: "agreement", kind: "REVIEW", ok: !!agreed.allowed, message: `No hay nada acordado con ${vname} para ${mes}.`, okMessage: agreed.allowed ? `Lo acordado para ${mes}: ${formatMoney(agreed.allowed)}.` : "" });
 
   // currency
