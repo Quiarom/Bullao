@@ -18,7 +18,6 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 const NAV = [
-  { to: "/bandeja", label: "Bandeja" },
   { to: "/cuentas", label: "Cuentas" },
   { to: "/acordado", label: "Lo acordado" },
   { to: "/reglas", label: "Reglas" },
@@ -41,13 +40,13 @@ function Layout() {
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-20 border-b bg-background/85 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 md:px-6">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 md:px-6">
           <Link to="/cuentas"><Logo /></Link>
-          <nav className="order-3 flex w-full gap-1 md:order-none md:w-auto">
+          <nav className="order-3 flex w-full min-w-0 gap-1 overflow-x-auto md:order-none md:w-auto">
             {NAV.map((n) => (
               <Link key={n.to} to={n.to}
-                className="rounded-md px-3 py-1.5 text-sm font-bold text-muted-foreground hover:text-foreground"
-                activeProps={{ className: "bg-ledger-soft text-primary" }}>
+                className="shrink-0 rounded-md px-2 py-1.5 text-sm font-bold text-muted-foreground hover:text-foreground"
+                activeProps={{ className: "text-primary underline underline-offset-8" }}>
                 {n.label}
               </Link>
             ))}
@@ -63,7 +62,7 @@ function Layout() {
           </div>
         </div>
       </header>
-      <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
+      <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
         <div className="mb-4 lg:hidden"><DemoBadge /></div>
         <Outlet />
       </div>
