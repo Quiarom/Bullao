@@ -19,12 +19,13 @@ export const Route = createFileRoute("/_authenticated/reglas")({
       { name: "description", content: "Define el presupuesto por moneda, lo que Bullao puede dejar listo solo y la tolerancia contra lo acordado." },
       { property: "og:title", content: "Reglas · Bullao" },
       { property: "og:description", content: "Las reglas con las que Bullao revisa cada cuenta." },
+      { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Reglas,
 });
 
-const EDITABLE: Currency[] = ["USD", "COP", "MXN"];
+const EDITABLE: Currency[] = ["USD", "COP", "MXN", "BRL"];
 
 const NEVER = [
   ["Una cuenta repetida nunca se paga.", "Mismo número o mismo CUFE/UUID: no se puede aprobar, sin importar el límite."],
@@ -77,55 +78,51 @@ function Reglas() {
   const set = (k: "budget" | "limit", c: string, v: string) => setForm({ ...form, [k]: { ...form[k], [c]: v } });
 
   function save() {
-    if (!parsed.rules) return;
+    if (!parsed.rules || !state) return;
+    const version = state.rulesHistory.length + 1;
     act.mutate({ kind: "update_rules", payload: { rules: parsed.rules } }, {
-      onSuccess: () => { toast(`Guardé reglas-v${state!.rulesHistory.length + 1}. Revisé de nuevo las cuentas sin decisión final.`); setForm(null); },
+      onSuccess: () => { toast(`Guardé reglas-v${version}. Revisé de nuevo las cuentas sin decisión final.`); setForm(null); },
       onError: () => toast.error("No pude guardar las reglas. Siguen las anteriores."),
     });
   }
 
   return (
-    <div className="rise grid gap-6">
+    <div className="grid gap-6 pb-60">
       <div>
         <h1 className="text-3xl font-extrabold md:text-4xl">Reglas</h1>
         <p className="mt-2 text-muted-foreground">Versión vigente: <b className="text-foreground">{state.rules.version}</b>. Guardar crea una versión nueva; las decisiones pasadas conservan la suya.</p>
       </div>
 
-      <section className="grid gap-4 md:grid-cols-3">
-        {EDITABLE.map((c) => {
-          const pct = state.rules.budget[c] ? Math.min(100, Math.round((used(c) / state.rules.budget[c]) * 100)) : 0;
-          return (
-            <div key={c} className="grid gap-3 rounded-xl border bg-card p-5">
-              <p className="font-bold">{c}</p>
-              <div className="grid gap-1.5">
-                <Label htmlFor={`b-${c}`}>Presupuesto del mes</Label>
-                <Input id={`b-${c}`} className="amount" value={form.budget[c]} onChange={(e) => set("budget", c, e.target.value)} />
-              </div>
-              <div className="h-1.5 overflow-hidden rounded-full bg-muted"><div className="h-full bg-primary" style={{ width: `${pct}%` }} /></div>
-              <p className="text-xs text-muted-foreground">Apartado: <Amount value={{ minor: used(c), currency: c }} /></p>
-              <div className="grid gap-1.5">
-                <Label htmlFor={`l-${c}`}>Bullao deja listo solo hasta (por pago)</Label>
-                <Input id={`l-${c}`} className="amount" value={form.limit[c]} onChange={(e) => set("limit", c, e.target.value)} />
-              </div>
-            </div>
-          );
-        })}
+      <section className="overflow-x-auto rounded-xl border">
+        <table className="w-full min-w-[620px] text-left text-sm">
+          <thead className="border-b text-xs text-muted-foreground"><tr><th className="p-4 font-bold">Moneda</th><th className="p-4 font-bold">Presupuesto del mes</th><th className="p-4 font-bold">Uso del presupuesto</th><th className="p-4 font-bold">Límite por pago</th></tr></thead>
+          <tbody className="divide-y">{EDITABLE.map((c) => {
+            const reserved = used(c);
+            const ratio = state.rules.budget[c] ? reserved / state.rules.budget[c] : 0;
+            return <tr key={c}>
+              <th className={`p-4 ${ratio > .9 ? "text-wait" : "text-foreground"}`}>{c}</th>
+              <td className="p-4"><Input id={`b-${c}`} aria-label={`Presupuesto ${c}`} className="amount max-w-44" value={form.budget[c]} onChange={(e) => set("budget", c, e.target.value)} /></td>
+              <td className={`p-4 ${ratio > .9 ? "text-wait" : "text-muted-foreground"}`}><p className="amount text-xs">{Math.round(ratio * 100)} % · {formatMoney({ minor: reserved, currency: c })}</p><p className="mt-2 text-xs">quedan <Amount value={{ minor: state.rules.budget[c] - reserved, currency: c }} /></p></td>
+              <td className="p-4"><Input id={`l-${c}`} aria-label={`Límite por pago ${c}`} className="amount max-w-44" value={form.limit[c]} onChange={(e) => set("limit", c, e.target.value)} /></td>
+            </tr>;
+          })}</tbody>
+        </table>
       </section>
 
-      <section className="grid gap-4 rounded-xl border bg-card p-5 md:grid-cols-[1fr_1fr_2fr]">
+      <section className="grid gap-4 border-t pt-5 md:grid-cols-[1fr_1fr_2fr]">
         <div className="grid gap-1.5"><Label htmlFor="tc">Tolerancia contratistas (%)</Label><Input id="tc" className="amount" inputMode="numeric" value={form.contractor} onChange={(e) => setForm({ ...form, contractor: e.target.value })} /></div>
         <div className="grid gap-1.5"><Label htmlFor="ts">Tolerancia software (%)</Label><Input id="ts" className="amount" inputMode="numeric" value={form.software} onChange={(e) => setForm({ ...form, software: e.target.value })} /></div>
         <p className="self-end text-sm text-muted-foreground">Siempre te consulto: proveedor nuevo, cambio de cuenta bancaria y datos que no encuentro en el documento.</p>
       </section>
 
       {(dirty || parsed.errors.length > 0) && (
-        <section className="rounded-xl border border-primary bg-card p-5" aria-live="polite">
+        <section className="fixed inset-x-0 bottom-0 z-30 max-h-[45vh] overflow-y-auto border-t bg-background px-4 py-4" aria-live="polite"><div className="mx-auto max-w-6xl">
           {parsed.errors.length > 0 ? (
             <ul className="grid gap-1 text-sm text-stop">{parsed.errors.map((e) => <li key={e}>{e}</li>)}</ul>
           ) : (
             <>
               <p className="font-bold">{changes.length === 0 ? "Con estas reglas no cambia ninguna cuenta." : `Con estas reglas cambian ${changes.length} ${changes.length === 1 ? "cuenta" : "cuentas"}.`}</p>
-              <ul className="mt-3 grid gap-2">
+              <ul className="mt-3 grid max-h-28 gap-2 overflow-y-auto">
                 {changes.map((c) => (
                   <li key={c.invoiceId} className="flex flex-wrap items-center gap-2 text-sm">
                     <span className="font-bold">{c.vendor}</span><StatusChip outcome={c.before} /><span aria-label="pasa a">→</span><StatusChip outcome={c.after} />
@@ -133,16 +130,16 @@ function Reglas() {
                 ))}
               </ul>
               <p className="mt-3 text-xs text-muted-foreground">Las cuentas que ya quedaron "{OUTCOME_LABEL.READY}" o que decidió una persona no cambian.</p>
-              <div className="mt-4 flex gap-2">
-                <Button onClick={save} disabled={act.isPending}>Guardar como reglas-v{state.rulesHistory.length + 1}</Button>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Button className="h-auto min-h-9 whitespace-normal" onClick={save} disabled={act.isPending}>Guardar como reglas-v{state.rulesHistory.length + 1}</Button>
                 <Button variant="outline" onClick={() => setForm(null)}>Descartar</Button>
               </div>
             </>
           )}
-        </section>
+        </div></section>
       )}
 
-      <section className="rounded-xl border bg-muted p-5">
+      <section className="border-t pt-5">
         <h2 className="flex items-center gap-2 text-lg font-extrabold text-muted-foreground"><Lock className="h-4 w-4" /> Lo que nunca se salta</h2>
         <ul className="mt-3 grid gap-3">
           {NEVER.map(([t, d]) => <li key={t} className="text-sm text-muted-foreground"><b>{t}</b> {d}</li>)}
@@ -150,7 +147,7 @@ function Reglas() {
       </section>
 
       {state.rulesHistory.length > 1 && (
-        <section className="rounded-xl border bg-card p-5">
+        <section className="border-t pt-5">
           <h2 className="text-lg font-extrabold">Versiones</h2>
           <ul className="mt-2 grid gap-1 text-sm text-muted-foreground">
             {state.rulesHistory.map((r) => <li key={r.version}><b className="text-foreground">{r.version}</b> · límite USD {toText(r.autoLimit.USD, "USD")} · presupuesto USD {toText(r.budget.USD, "USD")}</li>)}

@@ -22,6 +22,7 @@ export const Route = createFileRoute("/auth")({
       { name: "description", content: "Entra a Bullao para revisar las cuentas del mes." },
       { property: "og:title", content: "Entrar · Bullao" },
       { property: "og:description", content: "Entra a Bullao para revisar las cuentas del mes." },
+      { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AuthPage,
@@ -75,7 +76,7 @@ function AuthPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center paper-ruled px-4">
-      <div className="rise w-full max-w-sm rounded-xl border bg-card p-8 shadow-sm">
+      <div className="rise w-full max-w-sm rounded-xl border bg-card p-8">
         <Logo className="text-3xl" />
         <p className="mt-1 text-sm text-muted-foreground">Menos bulla, cuentas claras.</p>
         {sent ? (

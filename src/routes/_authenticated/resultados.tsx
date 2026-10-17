@@ -13,6 +13,7 @@ export const Route = createFileRoute("/_authenticated/resultados")({
       { name: "description", content: "Cómo le fue a Bullao este mes: decisiones correctas, pagos fuera de las reglas y casos reservados." },
       { property: "og:title", content: "Resultados · Bullao" },
       { property: "og:description", content: "La prueba honesta de Bullao, calculada en vivo." },
+      { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Resultados,
@@ -32,7 +33,7 @@ function Resultados() {
         <p className="mt-2 text-muted-foreground">Se compara la primera decisión de Bullao, antes de cualquier persona, contra el resultado esperado de cada caso. Los esperados se escribieron antes de programar y no se ajustan.</p>
       </div>
       {live.total === 0 ? (
-        <Empty>Todavía no reviso nada. Ve a la <Link to="/bandeja" className="font-bold text-primary underline">bandeja</Link> y pulsa Revisar.</Empty>
+        <Empty>Todavía no reviso nada. Ve a la <Link to="/cuentas" className="font-bold text-primary underline">lista de cuentas</Link> y pulsa Revisar.</Empty>
       ) : <Block title="Casos del mes" r={live} />}
       <Block title="Casos que Bullao no había visto" note="Cuatro documentos con una plantilla distinta: uno de duplicado, uno de lo acordado, uno de presupuesto y uno de cambio de banco. Se revisan después de toda la bandeja." r={hold} />
     </div>
@@ -52,7 +53,7 @@ function Block({ title, note, r }: { title: string; note?: string; r: Report }) 
       {note && <p className="mt-1 text-sm text-muted-foreground">{note}</p>}
       <dl className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
         {stats.map(([k, v]) => (
-          <div key={k} className="border-l-2 pl-3">
+          <div key={k} className="border-t pt-3">
             <dt className="text-xs text-muted-foreground">{k}</dt>
             <dd className="amount text-2xl font-semibold">{v}</dd>
           </div>

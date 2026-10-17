@@ -125,11 +125,11 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0; }
 }
 
 @utility font-display { font-family: var(--font-display); }
-@utility amount { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+@utility amount { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: 0; }
 @utility paper-ruled { background-image: var(--ruled); }
 @utility mark-quote {
   background: linear-gradient(transparent 12%, var(--marker) 12%, var(--marker) 88%, transparent 88%);
@@ -140,3 +140,6 @@
 @utility rise { animation: rise 0.45s cubic-bezier(.2,.7,.2,1) both; }
 
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.document-sheet { border-radius: 0; }
+@media (prefers-reduced-motion: reduce) { .rise { animation: none; } .animate-spin { animation: none; } }

@@ -15,3 +15,6 @@
 - Expected outcomes (`expected.json`) are written before implementation and never edited to make code pass. Why: honest evaluation.
 - Guest (anonymous) sessions may use the web demo but never the MCP or OAuth consent. Why: external assistants act only as real accounts.
 - MCP tools (`src/lib/mcp/`) are read-only and OAuth-scoped via RLS; approvals exist only in the web UI. Why: approvals must come from a person.
+
+- Accounts use one shared workspace with URL-selected detail; legacy inbox and detail URLs redirect there. Why: list, review and human approvals must stay together without duplicating logic.
+- Document presentation uses existing parsed fields and literal amount evidence; raw XML stays available separately. Why: improve readability without altering extraction or payment decisions.

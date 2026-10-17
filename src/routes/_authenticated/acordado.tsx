@@ -13,6 +13,7 @@ export const Route = createFileRoute("/_authenticated/acordado")({
       { name: "description", content: "Tarifas vigentes, adicionales autorizados y propuestas pendientes por proveedor." },
       { property: "og:title", content: "Lo acordado · Bullao" },
       { property: "og:description", content: "Lo que acordaste con cada proveedor, y desde cuándo." },
+      { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Acordado,
