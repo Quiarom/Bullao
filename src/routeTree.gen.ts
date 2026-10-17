@@ -12,7 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedAcordadoRouteImport } from './routes/_authenticated/acordado'
 import { Route as AuthenticatedCuentasRouteImport } from './routes/_authenticated/cuentas'
+import { Route as AuthenticatedReglasRouteImport } from './routes/_authenticated/reglas'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedCuentasIdRouteImport } from './routes/_authenticated/cuentas_.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,10 +32,25 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAcordadoRoute = AuthenticatedAcordadoRouteImport.update({
+  id: '/acordado',
+  path: '/acordado',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedCuentasRoute = AuthenticatedCuentasRouteImport.update({
   id: '/cuentas',
   path: '/cuentas',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReglasRoute = AuthenticatedReglasRouteImport.update({
+  id: '/reglas',
+  path: '/reglas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedCuentasIdRoute = AuthenticatedCuentasIdRouteImport.update({
   id: '/cuentas_/$id',
@@ -43,13 +61,19 @@ const AuthenticatedCuentasIdRoute = AuthenticatedCuentasIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/acordado': typeof AuthenticatedAcordadoRoute
   '/cuentas': typeof AuthenticatedCuentasRoute
+  '/reglas': typeof AuthenticatedReglasRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/cuentas/$id': typeof AuthenticatedCuentasIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/acordado': typeof AuthenticatedAcordadoRoute
   '/cuentas': typeof AuthenticatedCuentasRoute
+  '/reglas': typeof AuthenticatedReglasRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/cuentas/$id': typeof AuthenticatedCuentasIdRoute
 }
 export interface FileRoutesById {
@@ -57,20 +81,40 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/acordado': typeof AuthenticatedAcordadoRoute
   '/_authenticated/cuentas': typeof AuthenticatedCuentasRoute
+  '/_authenticated/reglas': typeof AuthenticatedReglasRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/_authenticated/cuentas_/$id': typeof AuthenticatedCuentasIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/cuentas' | '/cuentas/$id'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/acordado'
+    | '/cuentas'
+    | '/reglas'
+    | '/.lovable/oauth/consent'
+    | '/cuentas/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/cuentas' | '/cuentas/$id'
+  to:
+    | '/'
+    | '/auth'
+    | '/acordado'
+    | '/cuentas'
+    | '/reglas'
+    | '/.lovable/oauth/consent'
+    | '/cuentas/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/acordado'
     | '/_authenticated/cuentas'
+    | '/_authenticated/reglas'
+    | '/.lovable/oauth/consent'
     | '/_authenticated/cuentas_/$id'
   fileRoutesById: FileRoutesById
 }
@@ -78,6 +122,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -103,12 +148,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/acordado': {
+      id: '/_authenticated/acordado'
+      path: '/acordado'
+      fullPath: '/acordado'
+      preLoaderRoute: typeof AuthenticatedAcordadoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/cuentas': {
       id: '/_authenticated/cuentas'
       path: '/cuentas'
       fullPath: '/cuentas'
       preLoaderRoute: typeof AuthenticatedCuentasRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reglas': {
+      id: '/_authenticated/reglas'
+      path: '/reglas'
+      fullPath: '/reglas'
+      preLoaderRoute: typeof AuthenticatedReglasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/cuentas_/$id': {
       id: '/_authenticated/cuentas_/$id'
@@ -121,12 +187,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAcordadoRoute: typeof AuthenticatedAcordadoRoute
   AuthenticatedCuentasRoute: typeof AuthenticatedCuentasRoute
+  AuthenticatedReglasRoute: typeof AuthenticatedReglasRoute
   AuthenticatedCuentasIdRoute: typeof AuthenticatedCuentasIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAcordadoRoute: AuthenticatedAcordadoRoute,
   AuthenticatedCuentasRoute: AuthenticatedCuentasRoute,
+  AuthenticatedReglasRoute: AuthenticatedReglasRoute,
   AuthenticatedCuentasIdRoute: AuthenticatedCuentasIdRoute,
 }
 
@@ -137,6 +207,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
