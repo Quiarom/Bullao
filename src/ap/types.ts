@@ -9,6 +9,7 @@ export type Vendor = {
   kind: "contractor" | "software" | "provider";
   bankLast4: string | null;
   sends: string;
+  taxId?: string;
 };
 
 export type Agreement = {
@@ -81,9 +82,28 @@ export type Rules = {
   tolerancePct: { contractor: number; software: number; provider: number };
 };
 
+/** A document as it arrived. XML documents carry only the raw XML; the reader extracts fields. */
+export type XmlDoc = { id: string; caseNo?: number; channel: Channel; receivedAt: string; xml: string };
+export type InboxDoc = InvoiceDraft | XmlDoc;
+export const isXmlDoc = (d: InboxDoc): d is XmlDoc => "xml" in d;
+
+export type RulesInput = Pick<Rules, "autoLimit" | "budget" | "tolerancePct">;
+
+/** Everything company-specific. The engine never imports a dataset; callers pass one in. */
+export type Dataset = {
+  company: { name: string; month: string; footer: string };
+  rules: Rules;
+  vendors: Vendor[];
+  agreements: Agreement[];
+  inbox: InboxDoc[];
+  late: InboxDoc[];
+  holdout: InboxDoc[];
+  expected: { inbox: Record<string, Outcome>; holdout: Record<string, Outcome> };
+};
+
 export type ApEvent = {
   id: string;
-  kind: "approve_invoice" | "hold_invoice" | "approve_agreement" | "receive_invoice";
+  kind: "approve_invoice" | "hold_invoice" | "approve_agreement" | "receive_invoice" | "review_invoice" | "update_rules";
   payload: Record<string, unknown>;
   actor: string | null;
   created_at: string;
