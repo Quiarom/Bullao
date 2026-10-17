@@ -62,7 +62,7 @@ function Landing() {
         <section className="relative flex flex-col gap-4" aria-hidden>
           {NOISE.map((n, i) => (
             <div key={i} style={{ animationDelay: `${120 + i * 110}ms` }}
-              className={`rise ${n.r} rounded-lg border bg-card p-4 shadow-sm`}>
+              className={`rise ${n.r} rounded-lg border bg-card p-4`}>
               <p className="amount text-sm text-muted-foreground">{n.t}</p>
               {n.o && <div className="mt-3"><StatusChip outcome={n.o} /></div>}
             </div>

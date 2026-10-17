@@ -24,14 +24,15 @@ export const Route = createFileRoute("/.lovable/oauth/consent")({
     return { email: data.session.user.email ?? "" };
   },
   loader: async ({ location }) => {
-    const id = new URLSearchParams(location.search).get("authorization_id")!;
+    const id = new URLSearchParams(location.search).get("authorization_id");
+    if (!id) throw new Error("Falta el identificador de la autorización.");
     const { data, error } = await oauth().getAuthorizationDetails(id);
     if (error) throw new Error(error.message);
     const immediate = data?.redirect_url ?? data?.redirect_to;
     if (immediate && !data?.client) throw redirect({ href: immediate });
     return data;
   },
-  head: () => ({ meta: [{ title: "Conectar un asistente · Bullao" }, { name: "description", content: "Autoriza a un asistente a leer tus cuentas en Bullao." }] }),
+  head: () => ({ meta: [{ title: "Conectar un asistente · Bullao" }, { name: "description", content: "Autoriza a un asistente a leer tus cuentas en Bullao." }, { property: "og:title", content: "Conectar un asistente · Bullao" }, { property: "og:description", content: "Autoriza la lectura de tus cuentas en Bullao." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }),
   component: Consent,
   errorComponent: ({ error }) => (
     <main className="flex min-h-screen items-center justify-center p-6">

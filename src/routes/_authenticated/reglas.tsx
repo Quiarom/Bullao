@@ -78,9 +78,10 @@ function Reglas() {
   const set = (k: "budget" | "limit", c: string, v: string) => setForm({ ...form, [k]: { ...form[k], [c]: v } });
 
   function save() {
-    if (!parsed.rules) return;
+    if (!parsed.rules || !state) return;
+    const version = state.rulesHistory.length + 1;
     act.mutate({ kind: "update_rules", payload: { rules: parsed.rules } }, {
-      onSuccess: () => { toast(`Guardé reglas-v${state.rulesHistory.length + 1}. Revisé de nuevo las cuentas sin decisión final.`); setForm(null); },
+      onSuccess: () => { toast(`Guardé reglas-v${version}. Revisé de nuevo las cuentas sin decisión final.`); setForm(null); },
       onError: () => toast.error("No pude guardar las reglas. Siguen las anteriores."),
     });
   }

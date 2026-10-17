@@ -13,6 +13,7 @@ export const Route = createFileRoute("/_authenticated/resultados")({
       { name: "description", content: "Cómo le fue a Bullao este mes: decisiones correctas, pagos fuera de las reglas y casos reservados." },
       { property: "og:title", content: "Resultados · Bullao" },
       { property: "og:description", content: "La prueba honesta de Bullao, calculada en vivo." },
+      { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Resultados,
@@ -52,7 +53,7 @@ function Block({ title, note, r }: { title: string; note?: string; r: Report }) 
       {note && <p className="mt-1 text-sm text-muted-foreground">{note}</p>}
       <dl className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
         {stats.map(([k, v]) => (
-          <div key={k} className="border-l-2 pl-3">
+          <div key={k} className="border-t pt-3">
             <dt className="text-xs text-muted-foreground">{k}</dt>
             <dd className="amount text-2xl font-semibold">{v}</dd>
           </div>

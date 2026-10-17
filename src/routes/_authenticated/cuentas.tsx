@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AccountsWorkspace } from "@/components/bullao/accounts-workspace";
 export const Route = createFileRoute("/_authenticated/cuentas")({
-  validateSearch: (search: Record<string, unknown>) => ({ cuenta: typeof search.cuenta === "string" ? search.cuenta : undefined }),
+  validateSearch: (search: Record<string, unknown>): { cuenta?: string } => typeof search["cuenta"] === "string" ? { cuenta: search["cuenta"] } : {},
   head: () => ({ meta: [
     { title: "Cuentas · Bullao" },
     { name: "description", content: "Revisa las cuentas del mes, sus documentos y comprobaciones en una sola vista." },
