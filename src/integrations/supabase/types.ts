@@ -14,7 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ap_events: {
+        Row: {
+          actor: string | null
+          created_at: string
+          id: string
+          kind: string
+          payload: Json
+          user_id: string
+        }
+        Insert: {
+          actor?: string | null
+          created_at?: string
+          id?: string
+          kind: string
+          payload?: Json
+          user_id?: string
+        }
+        Update: {
+          actor?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          payload?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
