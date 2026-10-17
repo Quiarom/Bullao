@@ -33,7 +33,7 @@ function Resultados() {
         <p className="mt-2 text-muted-foreground">Se compara la primera decisión de Bullao, antes de cualquier persona, contra el resultado esperado de cada caso. Los esperados se escribieron antes de programar y no se ajustan.</p>
       </div>
       {live.total === 0 ? (
-        <Empty>Todavía no reviso nada. Ve a la <Link to="/bandeja" className="font-bold text-primary underline">bandeja</Link> y pulsa Revisar.</Empty>
+        <Empty>Todavía no reviso nada. Ve a la <Link to="/cuentas" className="font-bold text-primary underline">lista de cuentas</Link> y pulsa Revisar.</Empty>
       ) : <Block title="Casos del mes" r={live} />}
       <Block title="Casos que Bullao no había visto" note="Cuatro documentos con una plantilla distinta: uno de duplicado, uno de lo acordado, uno de presupuesto y uno de cambio de banco. Se revisan después de toda la bandeja." r={hold} />
     </div>

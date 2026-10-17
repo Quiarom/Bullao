@@ -87,7 +87,7 @@ function Reglas() {
   }
 
   return (
-    <div className="rise grid gap-6 pb-60">
+    <div className="grid gap-6 pb-60">
       <div>
         <h1 className="text-3xl font-extrabold md:text-4xl">Reglas</h1>
         <p className="mt-2 text-muted-foreground">Versión vigente: <b className="text-foreground">{state.rules.version}</b>. Guardar crea una versión nueva; las decisiones pasadas conservan la suya.</p>
