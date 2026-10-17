@@ -28,7 +28,7 @@ export function parseAmount(text: string, hint?: Currency): ParsedAmount {
   if (lastDot >= 0 && lastComma >= 0) {
     const decSep = lastDot > lastComma ? "." : ",";
     const thouSep = decSep === "." ? "," : ".";
-    const [i, d] = num.split(decSep);
+    const [i = "", d = ""] = num.split(decSep);
     if (num.split(decSep).length !== 2) return { ok: false, reason: "separadores confusos" };
     if (!validGroups(i, thouSep)) return { ok: false, reason: "separadores confusos" };
     intPart = i.split(thouSep).join("");
@@ -36,7 +36,7 @@ export function parseAmount(text: string, hint?: Currency): ParsedAmount {
   } else if (lastDot >= 0 || lastComma >= 0) {
     const sep = lastDot >= 0 ? "." : ",";
     const parts = num.split(sep);
-    const tail = parts[parts.length - 1];
+    const tail = parts[parts.length - 1] ?? "";
     if (parts.length > 2) {
       if (!validGroups(num, sep)) return { ok: false, reason: "separadores confusos" };
       intPart = parts.join("");
@@ -45,7 +45,7 @@ export function parseAmount(text: string, hint?: Currency): ParsedAmount {
       // hint says otherwise; a 3-digit tail is never cents.
       intPart = parts.join("");
     } else if (tail.length <= 2) {
-      intPart = parts[0];
+      intPart = parts[0] ?? "";
       decPart = tail;
     } else {
       return { ok: false, reason: "separadores confusos" };
@@ -61,7 +61,8 @@ export function parseAmount(text: string, hint?: Currency): ParsedAmount {
 
 function validGroups(s: string, sep: string) {
   const g = s.split(sep);
-  return g[0].length >= 1 && g[0].length <= 3 && g.slice(1).every((x) => x.length === 3);
+  const h = g[0] ?? "";
+  return h.length >= 1 && h.length <= 3 && g.slice(1).every((x) => x.length === 3);
 }
 
 export function formatMoney(m: Money): string {

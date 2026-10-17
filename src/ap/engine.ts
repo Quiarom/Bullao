@@ -38,7 +38,7 @@ export function findAgreed(agreements: Agreement[], vendorId: string, period: st
   const parts = prefer && all.some((p) => p.amount.currency === prefer) ? all.filter((p) => p.amount.currency === prefer) : all;
   let allowed: Money | null = null;
   if (parts.length) {
-    const cur = parts[0].amount.currency;
+    const cur = parts[0]!.amount.currency;
     allowed = { currency: cur, minor: parts.filter((p) => p.amount.currency === cur).reduce((s, p) => s + p.amount.minor, 0) };
   }
   return { base, extras, proposed, allowed };
@@ -209,15 +209,15 @@ export function buildState(events: ApEvent[] = []): ApState {
   for (const e of sorted) {
     const actor = e.actor ?? "Operador";
     if (e.kind === "receive_invoice") {
-      const inv = LATE_INVOICES[String(e.payload.invoiceId)];
+      const inv = LATE_INVOICES[String(e.payload["invoiceId"])];
       if (inv) process({ ...inv, receivedAt: e.created_at });
     } else if (e.kind === "hold_invoice") {
-      const v = views.get(String(e.payload.invoiceId));
+      const v = views.get(String(e.payload["invoiceId"]));
       if (v) v.held = true;
     } else if (e.kind === "approve_invoice") {
-      const v = views.get(String(e.payload.invoiceId));
+      const v = views.get(String(e.payload["invoiceId"]));
       if (!v || v.current.outcome !== "REVIEW") continue;
-      if (e.payload.contentHash !== contentHash(v.invoice)) continue; // la cuenta cambió: la autorización no sirve
+      if (e.payload["contentHash"] !== contentHash(v.invoice)) continue; // la cuenta cambió: la autorización no sirve
       // Reevalúa con el estado actual antes de apartar.
       const ev = evaluate({ invoice: v.invoice, rules, vendors, agreements, month });
       if (ev.outcome === "BLOCKED") {
@@ -241,7 +241,7 @@ export function buildState(events: ApEvent[] = []): ApState {
       record(v.invoice, approved, e.created_at, "persona", note);
       reserve(v.invoice, approved);
     } else if (e.kind === "approve_agreement") {
-      const ag = agreements.find((a) => a.id === String(e.payload.agreementId));
+      const ag = agreements.find((a) => a.id === String(e.payload["agreementId"]));
       if (!ag || ag.status !== "PROPOSED") continue;
       ag.status = "APPROVED"; ag.approvedBy = actor; ag.approvedAt = e.created_at;
       if (ag.kind === "MODIFICATION") {

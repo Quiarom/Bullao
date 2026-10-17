@@ -22,7 +22,7 @@ export function useApState() {
 async function actorName() {
   const { data } = await supabase.auth.getUser();
   const u = data.user;
-  return (u?.user_metadata?.full_name as string | undefined) ?? u?.email?.split("@")[0] ?? "Operador";
+  return (u?.user_metadata?.["full_name"] as string | undefined) ?? u?.email?.split("@")[0] ?? "Operador";
 }
 
 export function useApAction() {
