@@ -18,6 +18,7 @@ import { Route as AuthenticatedAcordadoRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedBandejaRouteImport } from './routes/_authenticated/bandeja'
 import { Route as AuthenticatedCuentasRouteImport } from './routes/_authenticated/cuentas'
 import { Route as AuthenticatedReglasRouteImport } from './routes/_authenticated/reglas'
+import { Route as AuthenticatedResultadosRouteImport } from './routes/_authenticated/resultados'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedCuentasIdRouteImport } from './routes/_authenticated/cuentas_.$id'
 
@@ -66,6 +67,11 @@ const AuthenticatedReglasRoute = AuthenticatedReglasRouteImport.update({
   path: '/reglas',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedResultadosRoute = AuthenticatedResultadosRouteImport.update({
+  id: '/resultados',
+  path: '/resultados',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
   path: '/.lovable/oauth/consent',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/bandeja': typeof AuthenticatedBandejaRoute
   '/cuentas': typeof AuthenticatedCuentasRoute
   '/reglas': typeof AuthenticatedReglasRoute
+  '/resultados': typeof AuthenticatedResultadosRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/cuentas/$id': typeof AuthenticatedCuentasIdRoute
 }
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/bandeja': typeof AuthenticatedBandejaRoute
   '/cuentas': typeof AuthenticatedCuentasRoute
   '/reglas': typeof AuthenticatedReglasRoute
+  '/resultados': typeof AuthenticatedResultadosRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/cuentas/$id': typeof AuthenticatedCuentasIdRoute
 }
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/_authenticated/bandeja': typeof AuthenticatedBandejaRoute
   '/_authenticated/cuentas': typeof AuthenticatedCuentasRoute
   '/_authenticated/reglas': typeof AuthenticatedReglasRoute
+  '/_authenticated/resultados': typeof AuthenticatedResultadosRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/_authenticated/cuentas_/$id': typeof AuthenticatedCuentasIdRoute
 }
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/bandeja'
     | '/cuentas'
     | '/reglas'
+    | '/resultados'
     | '/.lovable/oauth/consent'
     | '/cuentas/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/bandeja'
     | '/cuentas'
     | '/reglas'
+    | '/resultados'
     | '/.lovable/oauth/consent'
     | '/cuentas/$id'
   id:
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/_authenticated/bandeja'
     | '/_authenticated/cuentas'
     | '/_authenticated/reglas'
+    | '/_authenticated/resultados'
     | '/.lovable/oauth/consent'
     | '/_authenticated/cuentas_/$id'
   fileRoutesById: FileRoutesById
@@ -229,6 +241,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedReglasRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/resultados': {
+      id: '/_authenticated/resultados'
+      path: '/resultados'
+      fullPath: '/resultados'
+      preLoaderRoute: typeof AuthenticatedResultadosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
       path: '/.lovable/oauth/consent'
@@ -251,6 +270,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBandejaRoute: typeof AuthenticatedBandejaRoute
   AuthenticatedCuentasRoute: typeof AuthenticatedCuentasRoute
   AuthenticatedReglasRoute: typeof AuthenticatedReglasRoute
+  AuthenticatedResultadosRoute: typeof AuthenticatedResultadosRoute
   AuthenticatedCuentasIdRoute: typeof AuthenticatedCuentasIdRoute
 }
 
@@ -259,6 +279,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedBandejaRoute: AuthenticatedBandejaRoute,
   AuthenticatedCuentasRoute: AuthenticatedCuentasRoute,
   AuthenticatedReglasRoute: AuthenticatedReglasRoute,
+  AuthenticatedResultadosRoute: AuthenticatedResultadosRoute,
   AuthenticatedCuentasIdRoute: AuthenticatedCuentasIdRoute,
 }
 
