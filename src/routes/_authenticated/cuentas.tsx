@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { useApState } from "@/hooks/use-ap";
@@ -28,10 +28,8 @@ const FILTERS: { id: Outcome | "ALL"; label: string }[] = [
 ];
 
 function Cuentas() {
-  const child = useMatch({ from: "/_authenticated/cuentas/$id", shouldThrow: false });
   const { state, isLoading, isError, refetch } = useApState();
   const [f, setF] = useState<Outcome | "ALL">("ALL");
-  if (child) return <Outlet />;
   if (isLoading) return <Loading />;
   if (isError || !state) return <ErrorState onRetry={() => refetch()} />;
 
