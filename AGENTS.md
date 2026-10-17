@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Architecture rules
+- Payment decisions come only from the pure engine in `src/ap/` (seed data + replay of the user's append-only `ap_events`); never let a model or MCP tool decide or approve. Why: "la IA lee, el código decide".
+- MCP tools (`src/lib/mcp/`) are read-only and OAuth-scoped via RLS; approvals exist only in the web UI. Why: approvals must come from a person.
