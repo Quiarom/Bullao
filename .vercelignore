@@ -1,0 +1,11 @@
+.env*
+.local/
+.hermes/
+.git/
+node_modules/
+.output/
+.wrangler/
+.nitro/
+*.log
+core
+core.*

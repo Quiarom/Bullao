@@ -1,0 +1,142 @@
+{
+  "synthetic": true,
+  "source": "src/demo/nodo-labs/inbox.json",
+  "limitations": "Expected labels refer to original fixtures and order; a reimport may correctly become duplicate or exceed remaining budget. XML samples are not signed fiscal documents.",
+  "documents": [
+    {
+      "fixtureId": "inv-01",
+      "channel": "PDF",
+      "file": "inv-01.txt",
+      "expectedOriginalFixture": "READY",
+      "pdf": "inv-01.pdf"
+    },
+    {
+      "fixtureId": "inv-02",
+      "channel": "correo",
+      "file": "inv-02.txt",
+      "expectedOriginalFixture": "READY"
+    },
+    {
+      "fixtureId": "inv-03",
+      "channel": "XML CFDI",
+      "file": "inv-03.xml",
+      "expectedOriginalFixture": "READY"
+    },
+    {
+      "fixtureId": "inv-04",
+      "channel": "PDF",
+      "file": "inv-04.txt",
+      "expectedOriginalFixture": "READY",
+      "pdf": "inv-04.pdf"
+    },
+    {
+      "fixtureId": "inv-05",
+      "channel": "correo",
+      "file": "inv-05.txt",
+      "expectedOriginalFixture": "READY"
+    },
+    {
+      "fixtureId": "inv-06",
+      "channel": "correo",
+      "file": "inv-06.txt",
+      "expectedOriginalFixture": "READY"
+    },
+    {
+      "fixtureId": "inv-08a",
+      "channel": "XML DIAN",
+      "file": "inv-08a.xml",
+      "expectedOriginalFixture": "READY"
+    },
+    {
+      "fixtureId": "inv-20",
+      "channel": "PDF",
+      "file": "inv-20.txt",
+      "expectedOriginalFixture": "READY",
+      "pdf": "inv-20.pdf"
+    },
+    {
+      "fixtureId": "inv-16",
+      "channel": "PDF",
+      "file": "inv-16.txt",
+      "expectedOriginalFixture": "READY",
+      "pdf": "inv-16.pdf"
+    },
+    {
+      "fixtureId": "inv-07",
+      "channel": "WhatsApp",
+      "file": "inv-07.txt",
+      "expectedOriginalFixture": "BLOCKED"
+    },
+    {
+      "fixtureId": "inv-08b",
+      "channel": "correo",
+      "file": "inv-08b.xml",
+      "expectedOriginalFixture": "BLOCKED"
+    },
+    {
+      "fixtureId": "inv-09",
+      "channel": "PDF",
+      "file": "inv-09.txt",
+      "expectedOriginalFixture": "REVIEW",
+      "pdf": "inv-09.pdf"
+    },
+    {
+      "fixtureId": "inv-10",
+      "channel": "correo",
+      "file": "inv-10.txt",
+      "expectedOriginalFixture": "REVIEW"
+    },
+    {
+      "fixtureId": "inv-11",
+      "channel": "PDF",
+      "file": "inv-11.txt",
+      "expectedOriginalFixture": "REVIEW",
+      "pdf": "inv-11.pdf"
+    },
+    {
+      "fixtureId": "inv-12",
+      "channel": "XML CFDI",
+      "file": "inv-12.xml",
+      "expectedOriginalFixture": "REVIEW"
+    },
+    {
+      "fixtureId": "inv-13",
+      "channel": "correo",
+      "file": "inv-13.txt",
+      "expectedOriginalFixture": "BLOCKED"
+    },
+    {
+      "fixtureId": "inv-14",
+      "channel": "XML DIAN",
+      "file": "inv-14.xml",
+      "expectedOriginalFixture": "REVIEW"
+    },
+    {
+      "fixtureId": "inv-15",
+      "channel": "PDF",
+      "file": "inv-15.txt",
+      "expectedOriginalFixture": "REVIEW",
+      "pdf": "inv-15.pdf"
+    },
+    {
+      "fixtureId": "inv-17",
+      "channel": "PDF",
+      "file": "inv-17.txt",
+      "expectedOriginalFixture": "BLOCKED",
+      "pdf": "inv-17.pdf"
+    },
+    {
+      "fixtureId": "inv-19",
+      "channel": "correo",
+      "file": "inv-19.txt",
+      "expectedOriginalFixture": "REVIEW"
+    },
+    {
+      "fixtureId": "inv-21",
+      "channel": "PDF",
+      "file": "inv-21.txt",
+      "expectedOriginalFixture": "REVIEW",
+      "pdf": "inv-21.pdf"
+    }
+  ]
+}

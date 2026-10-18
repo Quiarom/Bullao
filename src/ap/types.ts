@@ -39,6 +39,7 @@ export type InvoiceDraft = {
   amountText: string;
   currencyHint: Currency | null;
   period: string;
+  dueDate?: string | null;
   concept: string;
   bankLast4: string | null;
   channel: Channel;
@@ -50,7 +51,17 @@ export type InvoiceDraft = {
 };
 
 export type Check = {
-  id: "evidence" | "amount" | "duplicate" | "currency" | "budget" | "vendor" | "bank" | "agreement" | "matches" | "limit";
+  id:
+    | "evidence"
+    | "amount"
+    | "duplicate"
+    | "currency"
+    | "budget"
+    | "vendor"
+    | "bank"
+    | "agreement"
+    | "matches"
+    | "limit";
   ok: boolean;
   kind: "BLOCK" | "REVIEW";
   message: string;
@@ -83,7 +94,13 @@ export type Rules = {
 };
 
 /** A document as it arrived. XML documents carry only the raw XML; the reader extracts fields. */
-export type XmlDoc = { id: string; caseNo?: number; channel: Channel; receivedAt: string; xml: string };
+export type XmlDoc = {
+  id: string;
+  caseNo?: number;
+  channel: Channel;
+  receivedAt: string;
+  xml: string;
+};
 export type InboxDoc = InvoiceDraft | XmlDoc;
 export const isXmlDoc = (d: InboxDoc): d is XmlDoc => "xml" in d;
 
@@ -103,7 +120,13 @@ export type Dataset = {
 
 export type ApEvent = {
   id: string;
-  kind: "approve_invoice" | "hold_invoice" | "approve_agreement" | "receive_invoice" | "review_invoice" | "update_rules";
+  kind:
+    | "approve_invoice"
+    | "hold_invoice"
+    | "approve_agreement"
+    | "receive_invoice"
+    | "review_invoice"
+    | "update_rules";
   payload: Record<string, unknown>;
   actor: string | null;
   created_at: string;

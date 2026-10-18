@@ -10,24 +10,23 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Bullao · Menos bulla, cuentas claras" },
-      { name: "description", content: "Bullao revisa las cuentas que te llegan por correo, PDF o WhatsApp y te trae solo lo que necesita tu visto bueno." },
+      { name: "description", content: "Envía una factura al asistente compatible; Bullao contrasta acuerdos y deja la decisión financiera al motor determinista." },
       { property: "og:title", content: "Bullao · Menos bulla, cuentas claras" },
       { property: "og:description", content: "Cuando autorizas algo solo esta vez, Bullao sabe que fue solo esta vez." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Landing,
+  component: LandingView,
 });
 
 const NOISE = [
-  { t: "Cuenta de cobro No. CP-0098 · $4.800.000", r: "-rotate-3", o: "READY" as const },
-  { t: "WhatsApp: te reenvío la cuenta por si no te llegó", r: "rotate-2", o: "BLOCKED" as const },
-  { t: "Invoice HA-1010 · USD 1,000.00 · servicio mensual", r: "-rotate-1", o: "REVIEW" as const },
-  { t: "“dale, por esta vez, solo mayo”", r: "rotate-3", o: null },
+  { t: "Factura INV-1042 · $860.000 · servicio mensual", r: "-rotate-1", o: "READY" as const },
+  { t: "Factura INV-1042 · mismo número y valor", r: "rotate-2", o: "BLOCKED" as const },
+  { t: "“solo esta vez, por favor”", r: "rotate-3", o: "REVIEW" as const },
 ];
 
-function Landing() {
+export function LandingView() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   async function demo() {
@@ -50,14 +49,14 @@ function Landing() {
             Menos bulla,<br />cuentas claras<span className="text-primary">.</span>
           </h1>
           <p className="mt-6 max-w-lg text-lg text-muted-foreground">
-            Bullao revisa las cuentas que te llegan por correo, PDF o WhatsApp, las compara con lo acordado con cada
-            proveedor, deja listo lo que cumple y te trae solo lo que necesita tu visto bueno.
+            Envía el documento al asistente compatible que ya usas. Bullao contrasta la factura con acuerdos y política autorizada: lo normal queda listo para simulación; duplicados se frenan y las excepciones vuelven a una persona.
           </p>
-          <p className="mt-4 max-w-lg text-lg font-bold">Cuando autorizas algo “solo esta vez”, sabe que fue solo esta vez.</p>
+          <p className="mt-4 max-w-lg text-lg font-bold">Menos bulla, cuentas claras: “solo esta vez” no cambia la regla para siempre.</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button size="lg" onClick={demo} disabled={busy}>Ver la demo de Nodo Labs <ArrowRight /></Button>
-            <Button asChild size="lg" variant="outline"><Link to="/auth" search={{}}>Entrar con tu cuenta</Link></Button>
+            <Button size="lg" onClick={demo} disabled={busy}>Ver demo <ArrowRight /></Button>
+            <Button asChild size="lg" variant="outline"><a href="#conectar">Cómo conectar asistente</a></Button>
           </div>
+          <p className="mt-4 text-sm text-muted-foreground">Demo local con datos ficticios precargados; muestra el flujo, no una integración conectada.</p>
         </section>
         <section className="relative flex flex-col gap-4" aria-hidden>
           {NOISE.map((n, i) => (
@@ -69,6 +68,16 @@ function Landing() {
           ))}
         </section>
       </main>
+      <section id="conectar" className="mx-auto max-w-6xl scroll-mt-8 px-6 pb-16">
+        <h2 className="text-3xl font-bold">Conecta tu asistente</h2>
+        <p className="mt-3 max-w-3xl text-muted-foreground">Configura el cliente MCP remoto con la URL <code>{typeof window === "undefined" ? "https://tu-dominio/mcp" : `${window.location.origin}/mcp`}</code> e inicia sesión en Bullao con tu propia cuenta mediante OAuth. El acceso requiere una cuenta autenticada; el cliente y el login se configuran en tu runtime.</p>
+        <p className="mt-3 max-w-3xl text-muted-foreground">Compatibilidad documentada no significa integración probada: no prometemos Hermes ya configurado ni conectores de correo/WhatsApp. La demo local usa política ficticia precargada. No es dinero real, no ofrece OCR universal y no activa una política nueva.</p>
+        <ol className="mt-8 grid gap-5 md:grid-cols-3">
+          <li><strong>1. Enviar</strong><p className="mt-1 text-sm text-muted-foreground">Adjunta una factura al asistente; la lectura depende del runtime y del documento.</p></li>
+          <li><strong>2. Contrastar</strong><p className="mt-1 text-sm text-muted-foreground">Bullao compara evidencia con acuerdos y límites autorizados; el motor registra el resultado.</p></li>
+          <li><strong>3. Resolver</strong><p className="mt-1 text-sm text-muted-foreground">Simulación lista, frenada por duplicado o consulta a una persona ante excepción.</p></li>
+        </ol>
+      </section>
       <footer className="mx-auto max-w-6xl px-6 pb-10 text-sm text-muted-foreground">
         Reto Blinka · 30X Hackathon. Bullao no es un banco y no mueve dinero real.
       </footer>
