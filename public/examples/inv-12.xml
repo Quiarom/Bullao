@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DOCUMENTO FICTICIO. SIN VALIDEZ FISCAL. -->
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4" xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" Version="4.0" Serie="A" Folio="A-214" Fecha="2026-10-03T12:00:00" Moneda="MXN" SubTotal="26000.00" Total="26000.00" TipoDeComprobante="I">
+  <cfdi:Emisor Rfc="MEXL800101AB1" Nombre="Lucía Méndez" RegimenFiscal="612"/>
+  <cfdi:Receptor Rfc="XEXX010101000" Nombre="Nodo Labs Inc." UsoCFDI="S01"/>
+  <cfdi:Conceptos>
+    <cfdi:Concepto ClaveProdServ="82101500" Cantidad="1" Descripcion="Contenido octubre" ValorUnitario="26000.00" Importe="26000.00"/>
+  </cfdi:Conceptos>
+  <cfdi:Complemento>
+    <tfd:TimbreFiscalDigital Version="1.1" UUID="6F1C2A90-0000-4D2E-9A11-FICTICIO0214" FechaTimbrado="2026-10-03T12:00:00"/>
+  </cfdi:Complemento>
+  <cfdi:Addenda>
+    <Pago Clabe="****1029"/>
+  </cfdi:Addenda>
+</cfdi:Comprobante>
+<!-- DOCUMENTO FICTICIO · 30X HACKATHON -->

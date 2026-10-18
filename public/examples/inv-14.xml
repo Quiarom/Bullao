@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DOCUMENTO FICTICIO. SIN VALIDEZ FISCAL. -->
+<AttachedDocument xmlns="urn:oasis:names:specification:ubl:schema:xsd:AttachedDocument-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:ID>AD-FE-311</cbc:ID>
+  <cac:Attachment><cac:ExternalReference><cbc:MimeCode>text/xml</cbc:MimeCode><cbc:Description><![CDATA[<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+      <cbc:ID>FE-311</cbc:ID>
+      <cbc:UUID schemeName="CUFE-SHA384">CUFE-b22d81aa-FICTICIO-311</cbc:UUID>
+      <cbc:IssueDate>2026-10-03</cbc:IssueDate>
+      <cbc:DocumentCurrencyCode>USD</cbc:DocumentCurrencyCode>
+      <cac:AccountingSupplierParty><cac:Party>
+        <cac:PartyName><cbc:Name>Estudio Pixel SAS</cbc:Name></cac:PartyName>
+        <cac:PartyTaxScheme><cbc:CompanyID schemeName="31">900000000</cbc:CompanyID></cac:PartyTaxScheme>
+      </cac:Party></cac:AccountingSupplierParty>
+      <cac:PaymentMeans><cac:PayeeFinancialAccount><cbc:ID>****9001</cbc:ID></cac:PayeeFinancialAccount></cac:PaymentMeans>
+      <cac:LegalMonetaryTotal><cbc:PayableAmount currencyID="USD">2400.00</cbc:PayableAmount></cac:LegalMonetaryTotal>
+      <cac:InvoiceLine><cbc:ID>1</cbc:ID><cac:Item><cbc:Description>Proyecto rediseño app</cbc:Description></cac:Item></cac:InvoiceLine>
+    </Invoice>]]></cbc:Description></cac:ExternalReference></cac:Attachment>
+</AttachedDocument>
+<!-- DOCUMENTO FICTICIO · 30X HACKATHON -->
