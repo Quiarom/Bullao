@@ -1,22 +1,34 @@
 import { ToolError, type ToolContext } from "@lovable.dev/mcp-js";
 import { buildState, firstReason, OUTCOME_LABEL } from "@/ap/engine";
-import { NODO_LABS } from "@/demo/nodo-labs";
+import { DATASET } from "@/demo/dataset";
 import { formatMoney, type Money } from "@/ap/money";
-import type { ApEvent } from "@/ap/types";
 import type { InvoiceView } from "@/ap/engine";
-import { supabaseForUser } from "./supabase";
+import { readEventsForUser } from "@/server/events.server";
+import { sqlite } from "@/server/db.server";
 
-/** Rebuilds the caller's month from their own events (RLS scoped). */
-export async function stateFor(ctx: ToolContext) {
+export function requireMcpUser(ctx: ToolContext, store: typeof sqlite = sqlite): string {
   if (!ctx.isAuthenticated()) throw new ToolError("Necesitas iniciar sesión en Bullao.");
-  if (ctx.getClaims()?.["is_anonymous"] === true) throw new ToolError("Las sesiones de invitado no pueden usar el MCP. Entra con tu cuenta.");
-  const sb = supabaseForUser(ctx);
-  const { data, error } = await sb.from("ap_events").select("id, kind, payload, actor, created_at").order("created_at").limit(1000);
-  if (error) throw new ToolError("No pude leer tu registro de cuentas.");
-  return buildState(NODO_LABS, (data ?? []) as ApEvent[]);
+  const userId = ctx.getUserId();
+  if (!userId) throw new ToolError("Token sin identificador de usuario.");
+  const scopes = ctx.getScopes() ?? [];
+  if (!scopes.includes("accounts:read"))
+    throw new ToolError("Tu autorización no incluye lectura de cuentas.");
+  const user = store.prepare('SELECT isAnonymous FROM "user" WHERE id = ?').get(userId) as
+    { isAnonymous?: number | boolean | null } | undefined;
+  if (!user) throw new ToolError("La cuenta autorizada ya no existe.");
+  if (user.isAnonymous)
+    throw new ToolError("Las sesiones de invitado no pueden usar el MCP. Entra con tu cuenta.");
+  return userId;
 }
 
-export const moneyJson = (m: Money | null) => (m ? { minor: m.minor, currency: m.currency, text: formatMoney(m) } : null);
+/** Rebuilds caller's month from that account's append-only events. */
+export async function stateFor(ctx: ToolContext) {
+  const userId = requireMcpUser(ctx);
+  return buildState(DATASET, readEventsForUser(userId));
+}
+
+export const moneyJson = (m: Money | null) =>
+  m ? { minor: m.minor, currency: m.currency, text: formatMoney(m) } : null;
 
 export const invoiceJson = (v: InvoiceView) => ({
   id: v.invoice.id,

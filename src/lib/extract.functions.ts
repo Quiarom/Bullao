@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { getRequestHeaders } from "@tanstack/react-start/server";
+import { requireUser } from "@/server/auth.server";
 
 /**
  * The model only proposes fields, each with the exact sentence it came from.
@@ -23,12 +24,12 @@ Para cada campo devuelve "value" y "quote": quote es la frase EXACTA copiada del
 - bankLast4: últimos 4 dígitos de la cuenta bancaria (quote = la frase con la cuenta).`;
 
 export const extractInvoice = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((input: { text: string }) => {
+  .validator((input: { text: string }) => {
     if (typeof input?.text !== "string" || input.text.trim().length < 10 || input.text.length > 20000) throw new Error("El texto debe tener entre 10 y 20.000 caracteres.");
     return { text: input.text };
   })
   .handler(async ({ data }): Promise<{ ok: true; fields: Extracted } | { ok: false; message: string }> => {
+    await requireUser(getRequestHeaders());
     const key = process.env["LOVABLE_API_KEY"];
     if (!key) return { ok: false, message: "La lectura con IA no está configurada en este servidor." };
     const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {

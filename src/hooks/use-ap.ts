@@ -1,19 +1,17 @@
 import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { appendEvent, listEvents, resetDemo } from "@/server/events.functions";
+import { authClient } from "@/lib/auth-client";
+import type { JsonObject } from "@/server/events.server";
 import { buildState } from "@/ap/engine";
-import { NODO_LABS } from "@/demo/nodo-labs";
+import { DATASET } from "@/demo/dataset";
 
-export const DATASET = NODO_LABS;
+export { DATASET };
 import type { ApEvent } from "@/ap/types";
 
 export const eventsQuery = queryOptions({
   queryKey: ["ap-events"],
-  queryFn: async (): Promise<ApEvent[]> => {
-    const { data, error } = await supabase.from("ap_events").select("id, kind, payload, actor, created_at").order("created_at");
-    if (error) throw error;
-    return (data ?? []) as ApEvent[];
-  },
+  queryFn: () => listEvents(),
 });
 
 export function useApState() {
@@ -22,20 +20,16 @@ export function useApState() {
   return { ...q, state };
 }
 
-export async function actorName() {
-  const { data } = await supabase.auth.getUser();
-  const u = data.user;
-  if (u?.is_anonymous) return "Invitado";
-  return (u?.user_metadata?.["full_name"] as string | undefined) ?? u?.email?.split("@")[0] ?? "Operador";
+export async function appendApEvent(e: { kind: ApEvent["kind"]; payload: Record<string, unknown> }) {
+  // UI actions build JSON-compatible payloads; the server validates each command before storage.
+  return appendEvent({ data: { ...e, payload: e.payload as JsonObject, commandId: crypto.randomUUID() } });
 }
 
 export function useApAction() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (e: { kind: ApEvent["kind"]; payload: Record<string, unknown> }) => {
-      const actor = await actorName();
-      const { error } = await supabase.from("ap_events").insert({ kind: e.kind, payload: e.payload as never, actor });
-      if (error) throw error;
+      await appendApEvent(e);
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["ap-events"] }),
   });
@@ -45,10 +39,9 @@ export function useResetDemo() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async () => {
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) throw new Error("Sin sesión");
-      const { error } = await supabase.from("ap_events").delete().eq("user_id", data.user.id);
-      if (error) throw error;
+      const { data } = await authClient.getSession();
+      if (!data?.user.isAnonymous) throw new Error("Solo la demo de invitado se puede reiniciar.");
+      await resetDemo();
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["ap-events"] }),
   });

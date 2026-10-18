@@ -3,8 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { DATASET, actorName } from "@/hooks/use-ap";
+import { appendApEvent, DATASET } from "@/hooks/use-ap";
 import { draftFromFields, draftFromXml } from "@/ap/upload";
 import { XmlReadError } from "@/ap/xml";
 import { extractInvoice } from "@/lib/extract.functions";
@@ -21,8 +20,7 @@ export function UploadDialog({ open, onOpenChange }: { open: boolean; onOpenChan
   const [busy, setBusy] = useState(false);
 
   async function save(draft: ReturnType<typeof draftFromXml>) {
-    const { error } = await supabase.from("ap_events").insert({ kind: "review_invoice", payload: { draft } as never, actor: await actorName() });
-    if (error) throw error;
+    await appendApEvent({ kind: "review_invoice", payload: { draft } });
     await qc.invalidateQueries({ queryKey: ["ap-events"] });
     onOpenChange(false); setText("");
     navigate({ to: "/cuentas", search: { cuenta: draft.id } });

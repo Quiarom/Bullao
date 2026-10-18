@@ -8,11 +8,11 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { supabase } from "@/integrations/supabase/client";
+import { authClient } from "@/lib/auth-client";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -104,15 +104,17 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
+  const session = authClient.useSession();
+  const identity = useRef<string | null | undefined>(undefined);
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
-        queryClient.invalidateQueries();
-        router.invalidate();
-      }
-    });
-    return () => data.subscription.unsubscribe();
-  }, [queryClient, router]);
+    if (session.isPending) return;
+    const next = session.data?.user.id ?? null;
+    if (identity.current !== undefined && identity.current !== next) {
+      void queryClient.resetQueries();
+      void router.invalidate();
+    }
+    identity.current = next;
+  }, [session.data?.user.id, session.isPending, queryClient, router]);
 
   return (
     <QueryClientProvider client={queryClient}>

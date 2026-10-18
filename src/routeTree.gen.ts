@@ -20,7 +20,9 @@ import { Route as AuthenticatedCuentasRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedReglasRouteImport } from './routes/_authenticated/reglas'
 import { Route as AuthenticatedResultadosRouteImport } from './routes/_authenticated/resultados'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as Char91DotwellKnownChar93OauthAuthorizationServerSplatRouteImport } from './routes/[.well-known]/oauth-authorization-server.$'
 import { Route as AuthenticatedCuentasIdRouteImport } from './routes/_authenticated/cuentas_.$id'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -77,10 +79,21 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthAuthorizationServerSplatRoute =
+  Char91DotwellKnownChar93OauthAuthorizationServerSplatRouteImport.update({
+    id: '/.well-known/oauth-authorization-server/$',
+    path: '/.well-known/oauth-authorization-server/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedCuentasIdRoute = AuthenticatedCuentasIdRouteImport.update({
   id: '/cuentas_/$id',
   path: '/cuentas/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -94,7 +107,9 @@ export interface FileRoutesByFullPath {
   '/reglas': typeof AuthenticatedReglasRoute
   '/resultados': typeof AuthenticatedResultadosRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.well-known/oauth-authorization-server/$': typeof Char91DotwellKnownChar93OauthAuthorizationServerSplatRoute
   '/cuentas/$id': typeof AuthenticatedCuentasIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -107,7 +122,9 @@ export interface FileRoutesByTo {
   '/reglas': typeof AuthenticatedReglasRoute
   '/resultados': typeof AuthenticatedResultadosRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.well-known/oauth-authorization-server/$': typeof Char91DotwellKnownChar93OauthAuthorizationServerSplatRoute
   '/cuentas/$id': typeof AuthenticatedCuentasIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,7 +139,9 @@ export interface FileRoutesById {
   '/_authenticated/reglas': typeof AuthenticatedReglasRoute
   '/_authenticated/resultados': typeof AuthenticatedResultadosRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.well-known/oauth-authorization-server/$': typeof Char91DotwellKnownChar93OauthAuthorizationServerSplatRoute
   '/_authenticated/cuentas_/$id': typeof AuthenticatedCuentasIdRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -137,7 +156,9 @@ export interface FileRouteTypes {
     | '/reglas'
     | '/resultados'
     | '/.lovable/oauth/consent'
+    | '/.well-known/oauth-authorization-server/$'
     | '/cuentas/$id'
+    | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -150,7 +171,9 @@ export interface FileRouteTypes {
     | '/reglas'
     | '/resultados'
     | '/.lovable/oauth/consent'
+    | '/.well-known/oauth-authorization-server/$'
     | '/cuentas/$id'
+    | '/api/auth/$'
   id:
     | '__root__'
     | '/'
@@ -164,7 +187,9 @@ export interface FileRouteTypes {
     | '/_authenticated/reglas'
     | '/_authenticated/resultados'
     | '/.lovable/oauth/consent'
+    | '/.well-known/oauth-authorization-server/$'
     | '/_authenticated/cuentas_/$id'
+    | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -174,6 +199,8 @@ export interface RootRouteChildren {
   McpRoute: typeof McpRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  Char91DotwellKnownChar93OauthAuthorizationServerSplatRoute: typeof Char91DotwellKnownChar93OauthAuthorizationServerSplatRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -255,12 +282,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-authorization-server/$': {
+      id: '/.well-known/oauth-authorization-server/$'
+      path: '/.well-known/oauth-authorization-server/$'
+      fullPath: '/.well-known/oauth-authorization-server/$'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthAuthorizationServerSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/cuentas_/$id': {
       id: '/_authenticated/cuentas_/$id'
       path: '/cuentas/$id'
       fullPath: '/cuentas/$id'
       preLoaderRoute: typeof AuthenticatedCuentasIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -294,6 +335,9 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  Char91DotwellKnownChar93OauthAuthorizationServerSplatRoute:
+    Char91DotwellKnownChar93OauthAuthorizationServerSplatRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

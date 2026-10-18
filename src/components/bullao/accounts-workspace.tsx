@@ -3,8 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, LoaderCircle, Plus, Square, Inbox } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { DATASET, actorName, eventsQuery, useApState } from "@/hooks/use-ap";
+import { appendApEvent, DATASET, eventsQuery, useApState } from "@/hooks/use-ap";
 import { firstReason, monthName, toDraft } from "@/ap/engine";
 import { CURRENCIES, parseAmount } from "@/ap/money";
 import type { Outcome } from "@/ap/types";
@@ -37,14 +36,12 @@ export function AccountsWorkspace({ selectedId }: { selectedId?: string | undefi
   async function reviewAll() {
     setRunning(true); stop.current = false; setProgress({});
     try {
-      const actor = await actorName();
       for (const doc of pending) {
         if (stop.current) break;
         setProgress((p) => ({ ...p, [doc.id]: "reading" }));
         await new Promise((r) => setTimeout(r, 300));
         setProgress((p) => ({ ...p, [doc.id]: "comparing" }));
-        const { error } = await supabase.from("ap_events").insert({ kind: "review_invoice", payload: { docId: doc.id }, actor });
-        if (error) throw error;
+        await appendApEvent({ kind: "review_invoice", payload: { docId: doc.id } });
         await qc.fetchQuery({ ...eventsQuery, staleTime: 0 });
         setProgress((p) => ({ ...p, [doc.id]: "done" }));
       }

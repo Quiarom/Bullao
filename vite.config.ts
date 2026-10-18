@@ -1,17 +1,17 @@
-// @lovable.dev/vite-tanstack-config already includes the following — do NOT add them manually
-// or the app will break with duplicate plugins:
-//   - TanStack devtools (dev-only, first), tanstackStart, viteReact, tailwindcss, tsConfigPaths,
-//     nitro (build-only using cloudflare as a default target), VITE_* env injection, @ path alias,
-//     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
-// You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
-import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/tanstack/vite";
+import { defineConfig, loadEnv } from "vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import { nitro } from "nitro/vite";
 
-export default defineConfig({
-  tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
-    server: { entry: "server" },
-  },
-  vite: { plugins: [mcpPlugin()] },
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+  for (const key of ["DATABASE_PATH", "BETTER_AUTH_URL", "BETTER_AUTH_SECRET", "LOVABLE_API_KEY"]) {
+    if (process.env[key] === undefined && env[key] !== undefined) process.env[key] = env[key];
+  }
+  return {
+    server: { port: 8080, host: "127.0.0.1" },
+    resolve: { tsconfigPaths: true },
+    plugins: [tanstackStart(), nitro({ preset: "node-server" }), react(), tailwindcss()],
+  };
 });

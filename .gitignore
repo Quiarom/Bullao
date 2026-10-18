@@ -16,6 +16,29 @@ dist-ssr
 .nitro
 *.local
 
+# Local configuration is never release content; empty examples are public.
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+
+# Private context and machine-specific agent tooling.
+/Docs/
+/.agents/
+/.claude/
+/.codex/
+/.atl/
+/.codegraph/
+/.projectmem/
+/skills-lock.json
+/plan.md
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
@@ -30,3 +53,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.projectmem/events.jsonl
+.projectmem/watch.pid
+.projectmem/watch.log
+.projectmem/structure.json
+
+# Local browser audit artifacts
+.playwright-cli/
+
+# Local application data and research cache
+data/
+.firecrawl/
